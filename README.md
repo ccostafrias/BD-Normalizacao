@@ -32,7 +32,8 @@ O build executa a verificação de tipos e os testes antes de gerar `dist/`.
 - Laboratório de fecho com cinco exemplos e teste de minimalidade de chaves.
 - Busca que ignora diferenças de acentuação, filtro de dificuldade e revisão de erros.
 - Questões salvas para depois e progresso persistido no navegador.
-- Guia de consulta com referências aos PDFs e às páginas utilizadas.
+- Guia de consulta com 50 verbetes, definições introdutórias, exemplos e links entre conceitos; busca por siglas e nomes sem exigir acentos, índice de A a Z e caminho sugerido para iniciantes.
+- Referências aos PDFs e às páginas utilizadas.
 - Rotas próprias, carregamento de páginas sob demanda e layout responsivo.
 - Exportação do progresso para consulta em JSON. Não há importação nesta versão.
 

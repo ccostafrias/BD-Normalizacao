@@ -94,3 +94,23 @@ O conjunto inicial inclui testes matemáticos para os casos CASAS, as chaves sob
 Nesse caso, estenda `QuestionType`, a validação e o componente de resposta. Mantenha a regra de correção fora da apresentação e teste a propriedade que torna a correção válida.
 
 Para uma futura decomposição livre, não basta comparar nomes e ordem de tabelas com um gabarito fixo: esquemas equivalentes podem ter nomes e agrupamentos diferentes. Esse recurso exige um avaliador específico.
+
+## Ampliar o guia de consulta
+
+O dicionário está em `src/data/guide.json`, agrupado em uma ordem de aprendizado. Cada verbete contém:
+
+| Campo | Uso |
+| --- | --- |
+| `id` | Identificador estável usado no endereço `/guia#id`; não reutilize um ID de seção |
+| `term` | Nome completo do conceito |
+| `aliases` | Siglas, sinônimos e notações pesquisáveis, também apresentados ao leitor |
+| `text` | Definição introdutória, com a regra formal quando necessária |
+| `example` | Exemplo concreto, com as hipóteses necessárias para interpretá-lo |
+| `detail` | Observação que esclarece uma sutileza ou um erro comum, sob expansão opcional |
+| `related` | IDs de verbetes relacionados; os links levam à definição e limpam a busca |
+
+As referências `document` e `pages` de cada seção indicam a base conceitual do material. Os exemplos e as explicações introdutórias são ampliações didáticas, não transcrições de um gabarito oficial. Ao acrescentar conceitos, confira também suas fontes.
+
+A busca consulta nome, aliases, definição, exemplo e detalhe, ignora acentos e maiúsculas, e coloca nomes e siglas exatos primeiro. A busca fica na URL (`/guia?busca=FNBC`), permitindo compartilhar ou recarregar a consulta. Os IDs antigos das seções continuam válidos.
+
+Os testes verificam as referências entre verbetes, as âncoras, as páginas das fontes, a pesquisa de siglas e a renderização com filtros. Execute `npm run build` antes de registrar a alteração.
