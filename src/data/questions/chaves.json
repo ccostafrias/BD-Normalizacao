@@ -1,0 +1,440 @@
+[
+  {
+    "id": "c-casas",
+    "moduleId": "chaves",
+    "type": "attributes",
+    "difficulty": "medium",
+    "title": "A chave que parece composta",
+    "prompt": "Selecione os atributos que formam a única chave candidata de CASAS.",
+    "answer": [
+      "Quadra"
+    ],
+    "hint": "Comece com Quadra e aplique as dependências até não aparecer nenhum atributo novo.",
+    "explanation": "Quadra determina Construtor; com os dois, obtemos Preço. Construtor também determina Estilo. Quadra sozinho alcança todos os atributos.",
+    "steps": [
+      {
+        "title": "Comece com Quadra",
+        "text": "Quadra → Construtor."
+      },
+      {
+        "title": "Complete o fecho",
+        "text": "Construtor → Estilo e (Construtor, Quadra) → Preço. Assim, Quadra⁺ contém toda a relação."
+      },
+      {
+        "title": "Verifique a minimalidade",
+        "text": "A chave tem apenas Quadra, e o conjunto vazio não determina todos os atributos. Incluir Construtor seria redundante."
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          2,
+          3
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "CASAS",
+      "attributes": [
+        "Construtor",
+        "Quadra",
+        "Preço",
+        "Estilo"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Quadra"
+          ],
+          "to": [
+            "Construtor"
+          ]
+        },
+        {
+          "from": [
+            "Construtor"
+          ],
+          "to": [
+            "Estilo"
+          ]
+        },
+        {
+          "from": [
+            "Construtor",
+            "Quadra"
+          ],
+          "to": [
+            "Preço"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "Quadra"
+    ]
+  },
+  {
+    "id": "c-superchave",
+    "moduleId": "chaves",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "Determinar tudo basta?",
+    "prompt": "Em CASAS, como classificar o conjunto (Quadra, Construtor)?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Uma chave candidata precisa determinar tudo e ser mínima.",
+    "explanation": "Toda chave candidata é uma superchave mínima. Quadra determina toda a relação; adicionar Construtor conserva a propriedade de superchave, mas elimina a minimalidade.",
+    "steps": [
+      {
+        "title": "Teste a determinação",
+        "text": "O fecho de {Quadra, Construtor} contém todos os atributos."
+      },
+      {
+        "title": "Retire um atributo",
+        "text": "Sem Construtor, o conjunto {Quadra} continua determinando tudo. Portanto, o conjunto original não é mínimo."
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          2,
+          3
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Superchave, mas não chave candidata",
+        "feedback": "Correto. Ele determina todos os atributos, porém Construtor é dispensável."
+      },
+      {
+        "id": "2",
+        "label": "Chave candidata, pois seu fecho contém todos os atributos",
+        "feedback": "Falta verificar a minimalidade: Quadra sozinho já determina tudo."
+      },
+      {
+        "id": "3",
+        "label": "Não é superchave, pois tem um atributo a mais",
+        "feedback": "Um superconjunto de uma chave continua sendo uma superchave."
+      }
+    ],
+    "relation": {
+      "name": "CASAS",
+      "attributes": [
+        "Construtor",
+        "Quadra",
+        "Preço",
+        "Estilo"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Quadra"
+          ],
+          "to": [
+            "Construtor"
+          ]
+        },
+        {
+          "from": [
+            "Construtor"
+          ],
+          "to": [
+            "Estilo"
+          ]
+        },
+        {
+          "from": [
+            "Construtor",
+            "Quadra"
+          ],
+          "to": [
+            "Preço"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "Quadra",
+      "Construtor"
+    ]
+  },
+  {
+    "id": "c-fecho",
+    "moduleId": "chaves",
+    "type": "attributes",
+    "difficulty": "medium",
+    "title": "Calcule AB⁺",
+    "prompt": "Selecione todos os atributos que pertencem ao fecho de {A, B}.",
+    "answer": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F"
+    ],
+    "hint": "O fecho começa incluindo A e B. Depois use A → C, B → D, AB → E e E → F.",
+    "explanation": "AB⁺ = {A, B, C, D, E, F}. O fecho inclui o conjunto inicial e tudo que pode ser deduzido usando as DFs.",
+    "steps": [
+      {
+        "title": "Inclua o conjunto inicial",
+        "text": "A e B já pertencem a AB⁺."
+      },
+      {
+        "title": "Aplique as DFs",
+        "text": "A fornece C; B fornece D; AB fornece E; E fornece F."
+      },
+      {
+        "title": "Pare no ponto fixo",
+        "text": "Não há novos atributos a acrescentar. AB determina toda a relação e nenhum de seus atributos pode ser retirado."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          18,
+          22,
+          26,
+          28
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "B"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "A",
+            "B"
+          ],
+          "to": [
+            "E"
+          ]
+        },
+        {
+          "from": [
+            "E"
+          ],
+          "to": [
+            "F"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "c-chave-cd",
+    "moduleId": "chaves",
+    "type": "attributes",
+    "difficulty": "medium",
+    "title": "Um atributo que não aparece à direita",
+    "prompt": "Selecione os atributos da única chave candidata de R.",
+    "answer": [
+      "C",
+      "D"
+    ],
+    "hint": "C e D não aparecem à direita de nenhuma DF. Como você poderia obtê-los se não estivessem no conjunto inicial?",
+    "explanation": "C e D precisam fazer parte de qualquer chave. Juntos determinam A e, por A, determinam B e E. CD é mínimo.",
+    "steps": [
+      {
+        "title": "Encontre os atributos indispensáveis",
+        "text": "Nenhuma DF produz C ou D; ambos devem estar na chave."
+      },
+      {
+        "title": "Calcule o fecho",
+        "text": "CD → A, A → B e A → E. Logo, CD⁺ = {A, B, C, D, E}."
+      },
+      {
+        "title": "Teste a minimalidade",
+        "text": "Sem C ou sem D não obtemos todos os atributos. A chave candidata é CD."
+      }
+    ],
+    "sources": [
+      {
+        "document": "lista",
+        "pages": [
+          1
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "C",
+            "D"
+          ],
+          "to": [
+            "A"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "B"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "E"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": "c-primarios",
+    "moduleId": "chaves",
+    "type": "attributes",
+    "difficulty": "hard",
+    "title": "Mais de uma chave",
+    "prompt": "As chaves candidatas de R são A, BC e CD. Quais atributos são primários?",
+    "answer": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "hint": "Primário significa pertencer a alguma chave candidata, não somente à chave primária escolhida.",
+    "explanation": "Todos os atributos são primários: A pertence à chave A; B e C pertencem a BC; D pertence a CD.",
+    "steps": [
+      {
+        "title": "Considere todas as chaves",
+        "text": "A⁺, BC⁺ e CD⁺ cobrem toda a relação; os três conjuntos são mínimos."
+      },
+      {
+        "title": "Faça a união dos atributos",
+        "text": "A ∪ BC ∪ CD = {A, B, C, D}. Todo atributo pertence a pelo menos uma chave candidata."
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          8
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "B"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "B",
+            "C"
+          ],
+          "to": [
+            "A"
+          ]
+        },
+        {
+          "from": [
+            "B",
+            "C"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "D"
+          ],
+          "to": [
+            "B"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "C",
+      "D"
+    ]
+  }
+]

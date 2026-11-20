@@ -1,0 +1,553 @@
+[
+  {
+    "id": "dc-3fn",
+    "moduleId": "decomposicao",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Decomponha R até 3FN",
+    "prompt": "Qual decomposição preserva todos os atributos e trata as dependências parciais e transitivas de R?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Verifique primeiro se nenhum atributo desapareceu. Depois procure onde cada DF será representada.",
+    "explanation": "A decomposição separa A → C, B → D e E → F, mantendo AB → E em R3. As relações resultantes estão em BCNF e, portanto, também em 3FN.",
+    "steps": [
+      {
+        "title": "Elimine dependências parciais",
+        "text": "Separe R1(A,C) e R2(B,D). Mantenha R_AB(A,B,E,F)."
+      },
+      {
+        "title": "Elimine a dependência transitiva",
+        "text": "Em R_AB, AB → E e E → F. Separe E → F."
+      },
+      {
+        "title": "Confira o resultado",
+        "text": "As DFs dadas são preservadas e a decomposição é sem perda.",
+        "tables": [
+          {
+            "name": "R1",
+            "attributes": [
+              "A",
+              "C"
+            ],
+            "key": [
+              "A"
+            ]
+          },
+          {
+            "name": "R2",
+            "attributes": [
+              "B",
+              "D"
+            ],
+            "key": [
+              "B"
+            ]
+          },
+          {
+            "name": "R3",
+            "attributes": [
+              "A",
+              "B",
+              "E"
+            ],
+            "key": [
+              "A",
+              "B"
+            ]
+          },
+          {
+            "name": "R4",
+            "attributes": [
+              "E",
+              "F"
+            ],
+            "key": [
+              "E"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "lista",
+        "pages": [
+          1
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "R1(A,C), R2(B,D), R3(A,B,E), R4(E,F)",
+        "feedback": "Correto. Cada DF dada pode ser verificada em uma das relações, e AB permanece representado."
+      },
+      {
+        "id": "2",
+        "label": "R1(A,B,E,F), R2(A,B), R3(B,D)",
+        "feedback": "O atributo C desaparece. A relação R1 também mantém E → F com E não superchave."
+      },
+      {
+        "id": "3",
+        "label": "R1(A,C), R2(B,D), R3(E,F)",
+        "feedback": "Falta uma relação que preserve a associação de AB com E; a reconstrução não é garantida."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "B"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "A",
+            "B"
+          ],
+          "to": [
+            "E"
+          ]
+        },
+        {
+          "from": [
+            "E"
+          ],
+          "to": [
+            "F"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "dc-atributos",
+    "moduleId": "decomposicao",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "Uma decomposição incompleta",
+    "prompt": "O exercício 6 do arquivo 9.3 propõe, como uma das afirmações a avaliar, R1(A,B,E,F), R2(A,B), R3(B,D). Qual problema já permite rejeitar essa proposta como decomposição de R?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Faça a união dos atributos das três relações e compare com R.",
+    "explanation": "C foi omitido. A proposta aparece como uma afirmação do exercício, não como um gabarito correto; sua ausência deve ser reconhecida na análise.",
+    "steps": [
+      {
+        "title": "Confira a cobertura",
+        "text": "A união é {A, B, D, E, F}. R também contém C."
+      },
+      {
+        "title": "Rejeite a proposta",
+        "text": "Sem C, a decomposição não representa todos os atributos originais. Ainda seria necessário analisar normalização, junção e preservação de DFs."
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          10
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "O atributo C não aparece em nenhuma relação resultante",
+        "feedback": "Correto. A união dos atributos das relações resultantes precisa cobrir R."
+      },
+      {
+        "id": "2",
+        "label": "Não podemos repetir A e B em relações distintas",
+        "feedback": "Atributos compartilhados são necessários em muitas decomposições."
+      },
+      {
+        "id": "3",
+        "label": "Toda relação resultante deve ter o mesmo número de atributos",
+        "feedback": "As relações podem ter quantidades diferentes de atributos."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "B"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "A",
+            "B"
+          ],
+          "to": [
+            "E"
+          ]
+        },
+        {
+          "from": [
+            "E"
+          ],
+          "to": [
+            "F"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "dc-lossless",
+    "moduleId": "decomposicao",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Qual junção é sem perda?",
+    "prompt": "Qual decomposição de ENSINA tem junção sem perda segundo o teste binário dos slides?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Para a decomposição binária, os atributos comuns devem determinar os atributos exclusivos de pelo menos um lado.",
+    "explanation": "O atributo comum é Instrutor. Como Instrutor → Curso, a condição de junção sem perda é satisfeita.",
+    "steps": [
+      {
+        "title": "Calcule a interseção",
+        "text": "{Instrutor, Curso} ∩ {Instrutor, Aluno} = {Instrutor}."
+      },
+      {
+        "title": "Teste a determinação",
+        "text": "Instrutor determina Curso, o atributo exclusivo de R1."
+      },
+      {
+        "title": "Conclua",
+        "text": "As projeções podem reconstruir exatamente a relação original para todo estado que respeite as DFs.",
+        "tables": [
+          {
+            "name": "R1",
+            "attributes": [
+              "Instrutor",
+              "Curso"
+            ],
+            "key": [
+              "Instrutor"
+            ]
+          },
+          {
+            "name": "R2",
+            "attributes": [
+              "Instrutor",
+              "Aluno"
+            ],
+            "key": [
+              "Instrutor",
+              "Aluno"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          49,
+          50,
+          51,
+          52
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "R1(Instrutor, Curso) e R2(Instrutor, Aluno)",
+        "feedback": "Correto. A interseção é Instrutor, e Instrutor → Curso."
+      },
+      {
+        "id": "2",
+        "label": "R1(Aluno, Instrutor) e R2(Aluno, Curso)",
+        "feedback": "A interseção Aluno não determina Instrutor nem Curso com as DFs dadas."
+      },
+      {
+        "id": "3",
+        "label": "R1(Curso, Instrutor) e R2(Curso, Aluno)",
+        "feedback": "A interseção Curso não determina Instrutor nem Aluno com as DFs dadas."
+      }
+    ],
+    "relation": {
+      "name": "ENSINA",
+      "attributes": [
+        "Aluno",
+        "Curso",
+        "Instrutor"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Aluno",
+            "Curso"
+          ],
+          "to": [
+            "Instrutor"
+          ]
+        },
+        {
+          "from": [
+            "Instrutor"
+          ],
+          "to": [
+            "Curso"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "dc-preservacao",
+    "moduleId": "decomposicao",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Duas propriedades diferentes",
+    "prompt": "Na decomposição ENSINA → (Instrutor, Curso) e (Instrutor, Aluno), a junção é sem perda. Isso também garante preservar (Aluno, Curso) → Instrutor?",
+    "answer": [
+      "1"
+    ],
+    "hint": "A associação entre Aluno, Curso e Instrutor pode ser verificada usando uma única tabela resultante?",
+    "explanation": "A decomposição é sem perda e suas relações estão em BCNF, mas a DF (Aluno, Curso) → Instrutor deixa de ser verificável apenas pelas DFs projetadas nas tabelas separadas.",
+    "steps": [
+      {
+        "title": "Confirme a junção",
+        "text": "A interseção Instrutor determina Curso: a decomposição é sem perda."
+      },
+      {
+        "title": "Analise a DF original",
+        "text": "Nenhuma tabela contém Aluno, Curso e Instrutor juntos. As DFs projetadas não implicam (Aluno, Curso) → Instrutor."
+      },
+      {
+        "title": "Distinga as propriedades",
+        "text": "Reconstruir sem gerar tuplas espúrias é uma condição; preservar a verificação das dependências é outra."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          49,
+          50,
+          52
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Não. Essa DF não é preservada nas relações separadas",
+        "feedback": "Correto. Junção sem perda e preservação de dependências são propriedades diferentes."
+      },
+      {
+        "id": "2",
+        "label": "Sim. Toda decomposição sem perda preserva todas as DFs",
+        "feedback": "O exemplo dos slides mostra justamente que isso não é garantido."
+      },
+      {
+        "id": "3",
+        "label": "Sim. Qualquer relação em BCNF preserva as DFs originais",
+        "feedback": "BCNF restringe as relações resultantes; não garante preservar todas as DFs da relação original."
+      }
+    ],
+    "relation": {
+      "name": "ENSINA",
+      "attributes": [
+        "Aluno",
+        "Curso",
+        "Instrutor"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Aluno",
+            "Curso"
+          ],
+          "to": [
+            "Instrutor"
+          ]
+        },
+        {
+          "from": [
+            "Instrutor"
+          ],
+          "to": [
+            "Curso"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "dc-dept",
+    "moduleId": "decomposicao",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Normalize o projeto",
+    "prompt": "Considere R(Nome, Salário, Dept, Gerente, Projeto, Data), com chave candidata (Nome, Projeto). Qual é a decomposição em 3FN apresentada no material?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Primeiro separe o que depende apenas de Nome. Depois observe Dept → Gerente.",
+    "explanation": "Os dados de pessoa dependem apenas de Nome; o gerente depende do departamento. A decomposição remove primeiro as dependências parciais e depois a transitiva.",
+    "steps": [
+      {
+        "title": "Chegue à 2FN",
+        "text": "Separe R1(Nome,Projeto,Data) de R2(Nome,Salário,Dept,Gerente)."
+      },
+      {
+        "title": "Chegue à 3FN",
+        "text": "Em R2, Nome → Dept → Gerente. Separe Dept → Gerente.",
+        "tables": [
+          {
+            "name": "PARTICIPACAO",
+            "attributes": [
+              "Nome",
+              "Projeto",
+              "Data"
+            ],
+            "key": [
+              "Nome",
+              "Projeto"
+            ]
+          },
+          {
+            "name": "PESSOA",
+            "attributes": [
+              "Nome",
+              "Salário",
+              "Dept"
+            ],
+            "key": [
+              "Nome"
+            ]
+          },
+          {
+            "name": "DEPARTAMENTO",
+            "attributes": [
+              "Dept",
+              "Gerente"
+            ],
+            "key": [
+              "Dept"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          4,
+          5
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "R1(Nome,Projeto,Data), R2(Nome,Salário,Dept), R3(Dept,Gerente)",
+        "feedback": "Correto. Ela separa a participação no projeto, os dados da pessoa e o gerente do departamento."
+      },
+      {
+        "id": "2",
+        "label": "R1(Nome,Projeto,Data), R2(Nome,Salário,Dept,Gerente)",
+        "feedback": "Essa é a etapa de 2FN. R2 mantém Dept → Gerente."
+      },
+      {
+        "id": "3",
+        "label": "R1(Nome,Salário), R2(Projeto,Data), R3(Dept,Gerente)",
+        "feedback": "Projeto sozinho não determina Data. A associação entre a pessoa e o projeto foi perdida."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "Nome",
+        "Salário",
+        "Dept",
+        "Gerente",
+        "Projeto",
+        "Data"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nome"
+          ],
+          "to": [
+            "Salário",
+            "Dept",
+            "Gerente"
+          ]
+        },
+        {
+          "from": [
+            "Dept"
+          ],
+          "to": [
+            "Gerente"
+          ]
+        },
+        {
+          "from": [
+            "Nome",
+            "Projeto"
+          ],
+          "to": [
+            "Data"
+          ]
+        }
+      ]
+    }
+  }
+]

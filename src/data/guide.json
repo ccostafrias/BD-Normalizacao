@@ -1,0 +1,37 @@
+[
+  { "id": "fundamentos", "title": "Por que normalizar?", "icon": "grid", "color": "blue", "intro": "Normalização organiza os fatos em relações para reduzir redundância e evitar anomalias de inserção, atualização e exclusão.", "items": [
+    { "term": "Atualização", "text": "O mesmo fato aparece em várias linhas. Alterar só algumas delas deixa os dados inconsistentes." },
+    { "term": "Inserção", "text": "Você não consegue registrar um fato sem ter que registrar outro, como cadastrar um material apenas quando existe uma venda." },
+    { "term": "Exclusão", "text": "Remover um fato apaga outro involuntariamente, como excluir a última nota e perder o cadastro de um material." }
+  ], "document": "slides", "pages": [3, 13, 14] },
+  { "id": "dependencias", "title": "Leia a seta na direção certa", "icon": "branch", "color": "mint", "intro": "X → Y significa: duas tuplas que concordam em X devem concordar também em Y. A DF é uma restrição para os estados válidos, não apenas uma coincidência em uma amostra.", "items": [
+    { "term": "Dependência trivial", "text": "X → Y é trivial quando Y já está contido em X. Exemplo: AB → A." },
+    { "term": "Dependência completa", "text": "Y depende de X, e nenhum subconjunto próprio de X é suficiente para determinar Y." },
+    { "term": "Dependência parcial", "text": "Y depende de X, mas algum subconjunto próprio de X já determina Y. Exemplo: AB determina C e A sozinho também determina C." },
+    { "term": "Transitividade", "text": "De X → Y e Y → Z podemos deduzir X → Z. Para testar a 3FN, também precisamos analisar se o determinante é superchave ou se o dependente é primário." }
+  ], "document": "slides", "pages": [17, 18, 20, 21, 38, 44] },
+  { "id": "chaves", "title": "Chaves, sem adivinhação", "icon": "key", "color": "lilac", "intro": "Use as DFs para calcular o fecho. Depois teste se os atributos escolhidos são suficientes e se algum deles pode ser retirado.", "items": [
+    { "term": "Fecho X⁺", "text": "Comece com X. Aplique DFs cujo lado esquerdo esteja disponível, acrescentando seus dependentes. Repita até nenhum atributo novo aparecer." },
+    { "term": "Superchave", "text": "Um conjunto X cujo fecho cobre todos os atributos da relação." },
+    { "term": "Chave candidata", "text": "Uma superchave mínima: nenhum subconjunto próprio continua sendo superchave. Mínima não significa necessariamente ter o menor tamanho entre todas as chaves." },
+    { "term": "Chave primária", "text": "Uma chave candidata escolhida para identificar as tuplas. As demais chaves candidatas continuam relevantes para a normalização." },
+    { "term": "Atributo primário", "text": "Um atributo que pertence a pelo menos uma chave candidata. Considere todas as chaves, e não apenas a primária escolhida." }
+  ], "document": "slides", "pages": [22, 26, 28, 30, 34, 44] },
+  { "id": "formas", "title": "Uma forma normal de cada vez", "icon": "layers", "color": "peach", "intro": "As formas são cumulativas: falhar em 2FN também impede a 3FN. Teste as dependências levando em conta todas as chaves candidatas.", "items": [
+    { "term": "1FN · valores atômicos", "text": "No modelo adotado pelo material, não há grupos repetidos ou conjuntos de valores em uma célula." },
+    { "term": "2FN · sem dependência parcial indevida", "text": "Além da 1FN, todo atributo não primário depende completamente de cada chave candidata. Procure partes próprias das chaves que determinem atributos não primários." },
+    { "term": "3FN · teste determinante e dependente", "text": "Para cada DF não trivial X → A, X é superchave ou A é primário. Em uma DF com vários dependentes, teste cada dependente. Isso evita usar a simplificação “nenhuma dependência transitiva” em casos com chaves sobrepostas." },
+    { "term": "BCNF · determinantes são superchaves", "text": "Para toda DF não trivial X → Y, X deve ser superchave. A exceção da 3FN para dependente primário deixa de valer. BCNF também aparece como FNBC nos materiais." }
+  ], "document": "slides", "pages": [15, 34, 38, 39, 43, 44, 45, 49] },
+  { "id": "decomposicao", "title": "Separar exige conferir", "icon": "grid", "color": "blue", "intro": "Chegar a relações menores é apenas parte do trabalho. A decomposição precisa representar os atributos originais e permitir uma reconstrução correta.", "items": [
+    { "term": "Cobertura dos atributos", "text": "A união dos atributos das relações resultantes deve cobrir todos os atributos da relação original." },
+    { "term": "Junção sem perda", "text": "A junção das projeções reconstrói exatamente a relação original para todo estado válido, sem acrescentar tuplas espúrias." },
+    { "term": "Teste binário", "text": "Para R1 e R2, a interseção deve determinar os atributos exclusivos de pelo menos um lado. Equivalentemente, os atributos comuns determinam toda R1 ou toda R2." },
+    { "term": "Preservação de dependências", "text": "As DFs projetadas nas relações resultantes, consideradas juntas, devem implicar as DFs originais. É diferente de junção sem perda; uma decomposição pode ter uma propriedade e falhar na outra." }
+  ], "document": "slides", "pages": [8, 9, 42, 49, 50, 51, 52] },
+  { "id": "avancado", "title": "Fatos independentes e junções", "icon": "target", "color": "mint", "intro": "Mesmo após resolver as redundâncias ligadas às DFs, podem restar dependências multivaloradas ou de junção.", "items": [
+    { "term": "Dependência multivalorada · X ↠ Y", "text": "Para um mesmo X, os valores de Y são independentes dos atributos restantes. Essa independência exige as combinações correspondentes de valores, como autores e assuntos de um livro." },
+    { "term": "4FN", "text": "Toda dependência multivalorada não trivial deve ter uma superchave como determinante. No exemplo LIVROS, separar Livro–Autor e Livro–Assunto evita repetir todas as combinações." },
+    { "term": "5FN", "text": "Trata dependências de junção: as dependências de junção não triviais devem decorrer das chaves candidatas. O exemplo FORNECE mostra uma reconstrução que exige considerar três projeções em conjunto." }
+  ], "document": "slides", "pages": [53, 54, 55, 56, 57, 58, 59, 60, 61] }
+]

@@ -1,0 +1,247 @@
+[
+  {
+    "id": "d-significado",
+    "moduleId": "dependencias",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "O sentido de uma dependência",
+    "prompt": "O que significa Código → Unidade?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Leia a seta como “determina”.",
+    "explanation": "Uma DF X → Y exige que duas tuplas com os mesmos valores de X tenham também os mesmos valores de Y. A direção importa.",
+    "steps": [
+      {
+        "title": "Fixe o determinante",
+        "text": "Considere duas linhas com o mesmo Código."
+      },
+      {
+        "title": "Compare o dependente",
+        "text": "Essas linhas precisam ter a mesma Unidade. Códigos distintos ainda podem usar a mesma unidade."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          17
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Um mesmo código deve estar associado a uma única unidade",
+        "feedback": "Correto. Tuplas com o mesmo Código precisam concordar em Unidade."
+      },
+      {
+        "id": "2",
+        "label": "Uma unidade só pode ser usada por um único código",
+        "feedback": "Isso seria a dependência inversa, que não decorre da DF dada."
+      },
+      {
+        "id": "3",
+        "label": "Código e Unidade precisam ter o mesmo valor",
+        "feedback": "Uma DF restringe associações entre valores; não exige igualdade entre eles."
+      }
+    ]
+  },
+  {
+    "id": "d-violacao",
+    "moduleId": "dependencias",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Encontre a contradição",
+    "prompt": "Qual par de linhas viola Código → Unidade?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Procure um mesmo valor à esquerda da seta com valores diferentes à direita.",
+    "explanation": "Uma instância com um contraexemplo refuta a DF. Já a ausência de contraexemplos em uma amostra não prova uma regra para todos os estados futuros.",
+    "steps": [
+      {
+        "title": "Compare os códigos",
+        "text": "O par com Código 10 nas duas linhas mantém o determinante fixo."
+      },
+      {
+        "title": "Compare as unidades",
+        "text": "kg e m são diferentes. Portanto, esse par viola a dependência declarada."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          17
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Código 10, Unidade kg; Código 10, Unidade m",
+        "feedback": "Correto. O mesmo determinante aparece com dependentes diferentes."
+      },
+      {
+        "id": "2",
+        "label": "Código 10, Unidade kg; Código 20, Unidade kg",
+        "feedback": "Códigos diferentes podem determinar a mesma unidade."
+      },
+      {
+        "id": "3",
+        "label": "Código 10, Unidade kg; Código 10, Unidade kg",
+        "feedback": "Os valores concordam; não há violação da DF."
+      }
+    ]
+  },
+  {
+    "id": "d-transitiva",
+    "moduleId": "dependencias",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Siga a cadeia",
+    "prompt": "Se Número_Nota → CPF e CPF → Endereço, qual dependência podemos deduzir?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Use a regra X → Y e Y → Z.",
+    "explanation": "Pela transitividade, a nota determina o CPF, que determina o endereço. Logo, a nota também determina o endereço.",
+    "steps": [
+      {
+        "title": "Primeiro elo",
+        "text": "Número_Nota determina CPF."
+      },
+      {
+        "title": "Segundo elo",
+        "text": "CPF determina Endereço. Encadeando as DFs, obtemos Número_Nota → Endereço."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          18,
+          20,
+          38
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Número_Nota → Endereço",
+        "feedback": "Correto. É uma aplicação da transitividade."
+      },
+      {
+        "id": "2",
+        "label": "Endereço → Número_Nota",
+        "feedback": "As dependências dadas não permitem inverter as setas."
+      },
+      {
+        "id": "3",
+        "label": "CPF → Número_Nota",
+        "feedback": "Um mesmo cliente pode ter várias notas; essa DF não foi fornecida."
+      }
+    ]
+  },
+  {
+    "id": "d-parcial",
+    "moduleId": "dependencias",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "A chave inteira é necessária?",
+    "prompt": "Considere a chave candidata (A, B). Como classificar a dependência de C em relação a essa chave?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Teste se você consegue retirar algum atributo da chave e continuar determinando C.",
+    "explanation": "A dependência é parcial: A → C, e A é uma parte própria da chave AB. Esse tipo de dependência de atributo não primário viola a 2FN.",
+    "steps": [
+      {
+        "title": "Identifique a chave",
+        "text": "AB determina todos os atributos de R e é mínima."
+      },
+      {
+        "title": "Teste uma parte",
+        "text": "A sozinho determina C. Não precisamos de B para obter C."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          21,
+          34
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Parcial, pois A sozinho já determina C",
+        "feedback": "Correto. Uma parte própria da chave determina C."
+      },
+      {
+        "id": "2",
+        "label": "Completa, pois AB também determina C",
+        "feedback": "AB determinar C não basta: a dependência completa exige que nenhum subconjunto próprio o determine."
+      },
+      {
+        "id": "3",
+        "label": "Multivalorada, pois a chave possui dois atributos",
+        "feedback": "Uma chave composta não caracteriza uma dependência multivalorada."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "B"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "A",
+            "B"
+          ],
+          "to": [
+            "E"
+          ]
+        },
+        {
+          "from": [
+            "E"
+          ],
+          "to": [
+            "F"
+          ]
+        }
+      ]
+    }
+  }
+]

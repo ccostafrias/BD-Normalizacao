@@ -1,0 +1,570 @@
+[
+  {
+    "id": "n-primeira",
+    "moduleId": "formas-normais",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "Quando falta a 2FN",
+    "prompt": "Qual é a forma normal mais alta de R entre 1FN, 2FN e 3FN?",
+    "answer": [
+      "1"
+    ],
+    "hint": "A chave candidata é AB. Verifique se algum atributo não primário depende apenas de A ou apenas de B.",
+    "explanation": "A chave é AB. C e D são não primários e dependem de A e B, respectivamente. Essas dependências parciais impedem a 2FN.",
+    "steps": [
+      {
+        "title": "Encontre a chave",
+        "text": "AB é a única chave candidata."
+      },
+      {
+        "title": "Procure dependências parciais",
+        "text": "A → C e B → D usam partes próprias da chave."
+      },
+      {
+        "title": "Classifique",
+        "text": "Como a 1FN foi assumida e a 2FN é violada, a forma normal mais alta entre as três é 1FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "lista",
+        "pages": [
+          1
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "1FN",
+        "feedback": "Correto. Atributos atômicos garantem a 1FN, mas A → C e B → D violam a 2FN."
+      },
+      {
+        "id": "2",
+        "label": "2FN",
+        "feedback": "C e D dependem de partes próprias da chave AB, impedindo a 2FN."
+      },
+      {
+        "id": "3",
+        "label": "3FN",
+        "feedback": "A relação falha antes, já na condição da 2FN."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "B"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "A",
+            "B"
+          ],
+          "to": [
+            "E"
+          ]
+        },
+        {
+          "from": [
+            "E"
+          ],
+          "to": [
+            "F"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "n-casas",
+    "moduleId": "formas-normais",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "Chave simples, problema transitivo",
+    "prompt": "Qual é a forma normal mais alta de CASAS entre 1FN, 2FN e 3FN?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Primeiro descubra a chave real: ela é Quadra, e não (Quadra, Construtor).",
+    "explanation": "CASAS está em 2FN, mas não em 3FN. Quadra → Construtor → Estilo cria uma dependência transitiva de um atributo não primário por um determinante que não é superchave.",
+    "steps": [
+      {
+        "title": "Teste a 2FN",
+        "text": "A única chave candidata é simples: Quadra. Não há dependência parcial de atributo não primário em relação a essa chave."
+      },
+      {
+        "title": "Teste a 3FN",
+        "text": "Construtor → Estilo tem determinante que não é superchave e dependente não primário."
+      },
+      {
+        "title": "Decomponha",
+        "text": "Separe o fato sobre o estilo do construtor dos fatos sobre cada quadra.",
+        "tables": [
+          {
+            "name": "CONSTRUTOR",
+            "attributes": [
+              "Construtor",
+              "Estilo"
+            ],
+            "key": [
+              "Construtor"
+            ]
+          },
+          {
+            "name": "CASAS",
+            "attributes": [
+              "Quadra",
+              "Construtor",
+              "Preço"
+            ],
+            "key": [
+              "Quadra"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          2,
+          3
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "2FN",
+        "feedback": "Correto. A chave é Quadra, mas Construtor → Estilo impede a 3FN."
+      },
+      {
+        "id": "2",
+        "label": "1FN",
+        "feedback": "Não há dependência parcial indevida de uma chave composta: a única chave é Quadra."
+      },
+      {
+        "id": "3",
+        "label": "3FN",
+        "feedback": "Construtor não é superchave e determina Estilo, que não é primário."
+      }
+    ],
+    "relation": {
+      "name": "CASAS",
+      "attributes": [
+        "Construtor",
+        "Quadra",
+        "Preço",
+        "Estilo"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Quadra"
+          ],
+          "to": [
+            "Construtor"
+          ]
+        },
+        {
+          "from": [
+            "Construtor"
+          ],
+          "to": [
+            "Estilo"
+          ]
+        },
+        {
+          "from": [
+            "Construtor",
+            "Quadra"
+          ],
+          "to": [
+            "Preço"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "n-cd",
+    "moduleId": "formas-normais",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "2FN não garante 3FN",
+    "prompt": "A chave candidata é CD. Qual afirmação descreve R?",
+    "answer": [
+      "1"
+    ],
+    "hint": "C sozinho ou D sozinho determinam algum atributo não primário? E A é uma superchave?",
+    "explanation": "Nenhum subconjunto próprio de CD determina A, B ou E. Porém A, que não é superchave, determina os atributos não primários B e E.",
+    "steps": [
+      {
+        "title": "Teste as partes da chave",
+        "text": "C⁺ = {C} e D⁺ = {D}. Não há dependência parcial de atributo não primário."
+      },
+      {
+        "title": "Identifique a transitividade",
+        "text": "CD → A e A → {B, E}."
+      },
+      {
+        "title": "Decomponha até 3FN",
+        "text": "Mantenha CD associado a A e agrupe os atributos determinados por A.",
+        "tables": [
+          {
+            "name": "R1",
+            "attributes": [
+              "C",
+              "D",
+              "A"
+            ],
+            "key": [
+              "C",
+              "D"
+            ]
+          },
+          {
+            "name": "R2",
+            "attributes": [
+              "A",
+              "B",
+              "E"
+            ],
+            "key": [
+              "A"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "lista",
+        "pages": [
+          1
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Está em 2FN, mas não em 3FN",
+        "feedback": "Correto. Não há dependência parcial de C ou D; A → B e A → E criam o problema transitivo."
+      },
+      {
+        "id": "2",
+        "label": "Não está em 2FN porque a chave é composta",
+        "feedback": "Uma chave composta é permitida na 2FN; é preciso existir dependência parcial indevida."
+      },
+      {
+        "id": "3",
+        "label": "Está em 3FN porque CD determina tudo",
+        "feedback": "Toda chave determina tudo. A 3FN impõe condições adicionais às DFs."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "C",
+            "D"
+          ],
+          "to": [
+            "A"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "B"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "E"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "n-vendedor",
+    "moduleId": "formas-normais",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "Retire a dependência parcial",
+    "prompt": "A chave candidata de VENDA_CARRO é (CarroNr, VendedorNr). Qual dependência deve ser tratada para chegar à 2FN?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Compare o lado esquerdo de cada DF com as partes próprias da chave.",
+    "explanation": "Comissão depende apenas do vendedor. Separe VENDEDOR(VendedorNr, Comissão); depois trate Data_Venda → Desconto para chegar à 3FN.",
+    "steps": [
+      {
+        "title": "Encontre a dependência parcial",
+        "text": "VendedorNr é parte própria da chave composta e determina Comissão."
+      },
+      {
+        "title": "Separe os dados do vendedor",
+        "text": "A relação restante ainda pode ter dependências transitivas.",
+        "tables": [
+          {
+            "name": "VENDEDOR",
+            "attributes": [
+              "VendedorNr",
+              "Comissão"
+            ],
+            "key": [
+              "VendedorNr"
+            ]
+          },
+          {
+            "name": "VENDA_CARRO1",
+            "attributes": [
+              "CarroNr",
+              "Data_Venda",
+              "VendedorNr",
+              "Desconto"
+            ],
+            "key": [
+              "CarroNr",
+              "VendedorNr"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Conclua a 3FN",
+        "text": "Separe DESCONTO_DATA(Data_Venda, Desconto) de VENDA_CARRO2(CarroNr, Data_Venda, VendedorNr)."
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          6,
+          7
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "VendedorNr → Comissão",
+        "feedback": "Correto. Comissão depende apenas de uma parte da chave."
+      },
+      {
+        "id": "2",
+        "label": "Data_Venda → Desconto",
+        "feedback": "Essa DF é relevante para a 3FN neste exemplo, pois Data_Venda não é parte da chave."
+      },
+      {
+        "id": "3",
+        "label": "(CarroNr, VendedorNr) → Data_Venda",
+        "feedback": "Essa dependência usa a chave inteira e não é a violação parcial procurada."
+      }
+    ],
+    "relation": {
+      "name": "VENDA_CARRO",
+      "attributes": [
+        "CarroNr",
+        "Data_Venda",
+        "VendedorNr",
+        "Comissão",
+        "Desconto"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "CarroNr",
+            "VendedorNr"
+          ],
+          "to": [
+            "Data_Venda"
+          ]
+        },
+        {
+          "from": [
+            "VendedorNr"
+          ],
+          "to": [
+            "Comissão"
+          ]
+        },
+        {
+          "from": [
+            "Data_Venda"
+          ],
+          "to": [
+            "Desconto"
+          ]
+        }
+      ]
+    },
+    "assumption": "Como no exercício, (CarroNr, VendedorNr) é chave candidata. A DF da chave para Data_Venda foi explicitada aqui para tornar a premissa visível."
+  },
+  {
+    "id": "n-todas-chaves",
+    "moduleId": "formas-normais",
+    "type": "multi-choice",
+    "difficulty": "hard",
+    "title": "O cuidado com atributos primários",
+    "prompt": "Sabendo que A, BC e CD são todas as chaves candidatas, selecione as afirmações verdadeiras.",
+    "answer": [
+      "1",
+      "2",
+      "4"
+    ],
+    "hint": "Na 3FN, um dependente primário pode ser permitido mesmo quando o determinante não é superchave.",
+    "explanation": "R está em 3FN, mas não em BCNF. D → B é aceita pela 3FN porque B é primário; BCNF exige que D seja superchave.",
+    "steps": [
+      {
+        "title": "Marque os atributos primários",
+        "text": "A, B, C e D participam das chaves A, BC e CD."
+      },
+      {
+        "title": "Teste a 3FN",
+        "text": "Para toda DF não trivial, o dependente é primário ou o determinante é superchave."
+      },
+      {
+        "title": "Teste BCNF",
+        "text": "D⁺ = {D, B}. Como D não determina A e C, D → B viola BCNF."
+      }
+    ],
+    "sources": [
+      {
+        "document": "exercicios",
+        "pages": [
+          8
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Todos os atributos de R são primários",
+        "feedback": "Correto. Cada atributo participa de alguma chave candidata."
+      },
+      {
+        "id": "2",
+        "label": "R está em 3FN",
+        "feedback": "Correto. Todos os dependentes são primários, atendendo à condição da 3FN."
+      },
+      {
+        "id": "3",
+        "label": "R está em BCNF",
+        "feedback": "D → B viola BCNF: D não é superchave."
+      },
+      {
+        "id": "4",
+        "label": "D → B viola BCNF",
+        "feedback": "Correto. D⁺ = {D, B}, que não cobre toda a relação."
+      }
+    ],
+    "relation": {
+      "name": "R",
+      "attributes": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "B"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "C"
+          ]
+        },
+        {
+          "from": [
+            "A"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "B",
+            "C"
+          ],
+          "to": [
+            "A"
+          ]
+        },
+        {
+          "from": [
+            "B",
+            "C"
+          ],
+          "to": [
+            "D"
+          ]
+        },
+        {
+          "from": [
+            "D"
+          ],
+          "to": [
+            "B"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "D"
+    ]
+  }
+]

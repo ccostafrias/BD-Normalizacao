@@ -1,0 +1,323 @@
+[
+  {
+    "id": "a-bcnf",
+    "moduleId": "avancado",
+    "type": "choice",
+    "difficulty": "medium",
+    "title": "A condição de Boyce–Codd",
+    "prompt": "Qual condição caracteriza BCNF no contexto das dependências funcionais?",
+    "answer": [
+      "1"
+    ],
+    "hint": "BCNF impõe uma condição ao lado esquerdo de cada DF não trivial.",
+    "explanation": "Uma relação está em BCNF quando todo determinante de uma DF não trivial é superchave. Toda relação em BCNF está em 3FN, mas o inverso pode falhar.",
+    "steps": [
+      {
+        "title": "Desconsidere as DFs triviais",
+        "text": "Em X → Y trivial, Y já é subconjunto de X."
+      },
+      {
+        "title": "Verifique o determinante",
+        "text": "Para cada DF não trivial, calcule X⁺. Ele deve cobrir todos os atributos da relação."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          43,
+          44,
+          45,
+          49
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Em toda DF não trivial X → Y, X é superchave",
+        "feedback": "Correto. O determinante precisa determinar toda a relação."
+      },
+      {
+        "id": "2",
+        "label": "Em toda DF, Y é uma chave candidata",
+        "feedback": "A exigência recai sobre o determinante, à esquerda da seta."
+      },
+      {
+        "id": "3",
+        "label": "Basta não existir dependência parcial",
+        "feedback": "Essa condição está ligada à 2FN, que é menos restritiva."
+      }
+    ]
+  },
+  {
+    "id": "a-ensina",
+    "moduleId": "avancado",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "3FN, mas não BCNF",
+    "prompt": "As chaves candidatas de ENSINA são (Aluno, Curso) e (Aluno, Instrutor). Como classificar a relação?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Teste Instrutor → Curso. Curso é primário? Instrutor determina todos os atributos?",
+    "explanation": "Instrutor → Curso é permitida na 3FN porque Curso pertence a uma chave candidata. Ela viola BCNF porque Instrutor não determina Aluno.",
+    "steps": [
+      {
+        "title": "Identifique os atributos primários",
+        "text": "Aluno, Curso e Instrutor pertencem a alguma chave candidata."
+      },
+      {
+        "title": "Teste Instrutor",
+        "text": "Instrutor⁺ = {Instrutor, Curso}; Aluno não é alcançado."
+      },
+      {
+        "title": "Classifique",
+        "text": "A 3FN aceita o dependente primário. BCNF exige superchave no determinante, então é violada."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          49
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Está em 3FN e não em BCNF",
+        "feedback": "Correto. Curso é primário, mas Instrutor não é superchave."
+      },
+      {
+        "id": "2",
+        "label": "Está em BCNF porque Instrutor determina Curso",
+        "feedback": "Instrutor não determina Aluno e, portanto, não é superchave."
+      },
+      {
+        "id": "3",
+        "label": "Não está em 2FN porque tem duas chaves",
+        "feedback": "Ter várias chaves não implica violação da 2FN. Todos os atributos aqui são primários."
+      }
+    ],
+    "relation": {
+      "name": "ENSINA",
+      "attributes": [
+        "Aluno",
+        "Curso",
+        "Instrutor"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Aluno",
+            "Curso"
+          ],
+          "to": [
+            "Instrutor"
+          ]
+        },
+        {
+          "from": [
+            "Instrutor"
+          ],
+          "to": [
+            "Curso"
+          ]
+        }
+      ]
+    },
+    "closureStart": [
+      "Instrutor"
+    ]
+  },
+  {
+    "id": "a-dmv",
+    "moduleId": "avancado",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Dois conjuntos independentes",
+    "prompt": "Um livro tem vários autores e vários assuntos. Para cada livro, autores e assuntos são independentes e todas as combinações devem existir. Que dependência descreve isso?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Um livro determina um único autor ou um conjunto de autores independente dos assuntos?",
+    "explanation": "O exemplo dos slides introduz Livro ↠ Autor e Livro ↠ Assunto. A independência exige as combinações entre os autores e os assuntos de cada livro.",
+    "steps": [
+      {
+        "title": "Fixe um livro",
+        "text": "Considere autores A1 e A2 e assuntos S1 e S2."
+      },
+      {
+        "title": "Combine os fatos independentes",
+        "text": "Devem existir (A1,S1), (A1,S2), (A2,S1) e (A2,S2) para esse livro. Essa repetição motiva a 4FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          53,
+          54,
+          55,
+          56
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Dependência multivalorada",
+        "feedback": "Correto. Fixado o livro, os conjuntos independentes de autores e assuntos geram todas as combinações."
+      },
+      {
+        "id": "2",
+        "label": "Livro → Autor como dependência funcional",
+        "feedback": "Uma DF exigiria um único Autor para cada Livro, o que não foi assumido."
+      },
+      {
+        "id": "3",
+        "label": "Autor → Assunto como dependência funcional",
+        "feedback": "O enunciado não associa um autor a um único assunto; os conjuntos são independentes por livro."
+      }
+    ]
+  },
+  {
+    "id": "a-4fn",
+    "moduleId": "avancado",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Separe os fatos independentes",
+    "prompt": "Em LIVRO_DADOS(Livro, Autor, Assunto), não há DFs não triviais e valem as DMVs Livro ↠ Autor e Livro ↠ Assunto. Qual decomposição remove a redundância do exemplo?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Represente separadamente quais são os autores e quais são os assuntos de cada livro.",
+    "explanation": "Livro não é superchave da relação original e determina conjuntos multivalorados independentes. A decomposição do exemplo preserva esses conjuntos e permite reconstruir suas combinações.",
+    "steps": [
+      {
+        "title": "Identifique a redundância",
+        "text": "Os autores são repetidos para cada assunto e os assuntos para cada autor."
+      },
+      {
+        "title": "Decomponha",
+        "text": "Registre cada associação uma única vez.",
+        "tables": [
+          {
+            "name": "LIVRO_AUTOR",
+            "attributes": [
+              "Livro",
+              "Autor"
+            ],
+            "key": [
+              "Livro",
+              "Autor"
+            ]
+          },
+          {
+            "name": "LIVRO_ASSUNTO",
+            "attributes": [
+              "Livro",
+              "Assunto"
+            ],
+            "key": [
+              "Livro",
+              "Assunto"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Reconstrua",
+        "text": "A junção por Livro recupera as combinações exigidas pela independência dos conjuntos."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          55,
+          57
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "LIVRO_AUTOR(Livro,Autor) e LIVRO_ASSUNTO(Livro,Assunto)",
+        "feedback": "Correto. Cada conjunto independente fica representado separadamente."
+      },
+      {
+        "id": "2",
+        "label": "AUTOR_ASSUNTO(Autor,Assunto) e LIVRO(Livro)",
+        "feedback": "A associação de cada autor e assunto ao livro seria perdida."
+      },
+      {
+        "id": "3",
+        "label": "LIVRO_AUTOR(Livro,Autor) apenas",
+        "feedback": "Os assuntos desapareceriam da representação."
+      }
+    ]
+  },
+  {
+    "id": "a-5fn",
+    "moduleId": "avancado",
+    "type": "choice",
+    "difficulty": "hard",
+    "title": "Quando duas relações não bastam",
+    "prompt": "No exemplo FORNECE dos slides, uma dependência de junção envolve três projeções. Qual afirmação corresponde ao exemplo?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Observe a diferença entre juntar um par de projeções e juntar todas as projeções da dependência.",
+    "explanation": "A 5FN trata dependências de junção que podem envolver mais de duas projeções. No exemplo, a restrição de negócio garante a reconstrução pela junção das três relações indicadas.",
+    "steps": [
+      {
+        "title": "Use a regra de negócio do exemplo",
+        "text": "Os vínculos fornecedor–peça, peça–projeto e fornecedor–projeto precisam ser considerados em conjunto."
+      },
+      {
+        "title": "Evite generalizações",
+        "text": "Uma decomposição em três relações não é automaticamente correta: a dependência de junção deve ser válida."
+      },
+      {
+        "title": "Interprete a 5FN",
+        "text": "O caso FORNECE ilustra uma redundância ligada a uma dependência de junção além das DMVs tratadas na 4FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          58,
+          59,
+          60,
+          61
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "A junção das três projeções reconstrói a relação; juntar apenas duas pode produzir tuplas espúrias",
+        "feedback": "Correto. É necessário considerar a dependência de junção completa descrita no exemplo."
+      },
+      {
+        "id": "2",
+        "label": "Qualquer relação com três atributos viola a 5FN",
+        "feedback": "A quantidade de atributos não determina a forma normal."
+      },
+      {
+        "id": "3",
+        "label": "Estar em 4FN garante estar em 5FN",
+        "feedback": "O material apresenta FORNECE como um caso em 4FN que ainda exige analisar uma dependência de junção."
+      }
+    ]
+  }
+]

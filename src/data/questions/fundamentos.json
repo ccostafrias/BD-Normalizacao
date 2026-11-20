@@ -1,0 +1,203 @@
+[
+  {
+    "id": "f-anomalia",
+    "moduleId": "fundamentos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Uma atualização, vários lugares",
+    "prompt": "O endereço de um cliente aparece em todas as suas notas fiscais. Ao mudar de endereço, algumas notas são atualizadas e outras não. Qual problema isso exemplifica?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Observe qual operação deixou os dados inconsistentes.",
+    "explanation": "A redundância espalha um mesmo fato por várias tuplas. Uma atualização incompleta produz endereços divergentes para o mesmo cliente.",
+    "steps": [
+      {
+        "title": "Localize o fato repetido",
+        "text": "O endereço descreve o cliente e se repete em várias notas."
+      },
+      {
+        "title": "Reconheça a consequência",
+        "text": "Alterar só parte das ocorrências gera inconsistência. Separar os dados do cliente permite manter o endereço em um único lugar."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          3,
+          36,
+          40
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Anomalia de atualização",
+        "feedback": "Correto. O mesmo fato repetido pode ser atualizado de maneira inconsistente."
+      },
+      {
+        "id": "2",
+        "label": "Anomalia de inserção",
+        "feedback": "A situação trata da alteração de dados já existentes."
+      },
+      {
+        "id": "3",
+        "label": "Dependência multivalorada",
+        "feedback": "A repetição de endereço, por si só, não caracteriza uma DMV."
+      }
+    ]
+  },
+  {
+    "id": "f-exclusao",
+    "moduleId": "fundamentos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "A última nota fiscal",
+    "prompt": "Ao excluir a única nota fiscal de um material, também desaparecem sua descrição e sua unidade. Qual é a anomalia?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Qual operação fez uma informação independente desaparecer?",
+    "explanation": "Uma nota e um material representam fatos diferentes. Ao reuni-los exclusivamente na mesma relação, a existência do material fica dependente da existência de uma nota.",
+    "steps": [
+      {
+        "title": "Separe os significados",
+        "text": "Excluir uma compra não deveria apagar o cadastro do material."
+      },
+      {
+        "title": "Reconheça a anomalia",
+        "text": "A perda involuntária da descrição e da unidade é uma anomalia de exclusão."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          14
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Anomalia de exclusão",
+        "feedback": "Correto. A exclusão de uma nota eliminou outro fato que precisava continuar armazenado."
+      },
+      {
+        "id": "2",
+        "label": "Anomalia de inserção",
+        "feedback": "Não foi a inclusão de uma linha que causou o problema."
+      },
+      {
+        "id": "3",
+        "label": "Violação da atomicidade",
+        "feedback": "O problema descrito é a perda de dados de outra entidade durante uma exclusão."
+      }
+    ]
+  },
+  {
+    "id": "f-atomicidade",
+    "moduleId": "fundamentos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Uma célula, uma lista",
+    "prompt": "Uma coluna Autores armazena uma lista de autores em cada célula. No tratamento apresentado nos slides, qual é o primeiro problema a resolver?",
+    "answer": [
+      "1"
+    ],
+    "hint": "Antes das dependências parciais e transitivas, observe como os valores estão armazenados.",
+    "explanation": "No exemplo LIVROS, os conjuntos de autores e assuntos são desdobrados para trabalhar com valores atômicos. Isso, sozinho, ainda não resolve todas as redundâncias.",
+    "steps": [
+      {
+        "title": "Identifique o grupo repetido",
+        "text": "Uma célula contém vários valores de Autor."
+      },
+      {
+        "title": "Aplique a primeira condição",
+        "text": "Represente os valores de forma atômica. Depois analise chaves e dependências para decidir novas decomposições."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          15,
+          53
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "Os grupos de valores na mesma célula impedem a 1FN",
+        "feedback": "Correto. Os valores devem ser atômicos no modelo adotado para o exercício."
+      },
+      {
+        "id": "2",
+        "label": "Toda tabela precisa ter uma chave de uma única coluna",
+        "feedback": "Uma chave pode ser composta por vários atributos."
+      },
+      {
+        "id": "3",
+        "label": "É obrigatório chegar diretamente à 5FN",
+        "feedback": "O primeiro passo é representar os dados na 1FN; as demais formas têm condições adicionais."
+      }
+    ]
+  },
+  {
+    "id": "f-insercao",
+    "moduleId": "fundamentos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Cadastrar antes de vender",
+    "prompt": "O sistema só permite cadastrar um material quando ele aparece em uma nota fiscal. Por que isso é um problema?",
+    "answer": [
+      "1"
+    ],
+    "hint": "O cadastro do material precisa de uma nota para existir?",
+    "explanation": "É uma anomalia de inserção: dois tipos de informação ficaram misturados, impedindo registrar um deles de forma independente.",
+    "steps": [
+      {
+        "title": "Identifique as entidades",
+        "text": "Material e nota fiscal têm existências e significados distintos."
+      },
+      {
+        "title": "Permita a inserção independente",
+        "text": "Um cadastro Material separado permite incluir um produto antes de qualquer venda."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          13,
+          14,
+          37
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "options": [
+      {
+        "id": "1",
+        "label": "O material depende de uma venda para poder ser cadastrado",
+        "feedback": "Correto. Essa restrição indesejada é uma anomalia de inserção."
+      },
+      {
+        "id": "2",
+        "label": "Porque toda nota deveria ter apenas um material",
+        "feedback": "Uma nota pode conter vários itens; isso não explica a anomalia."
+      },
+      {
+        "id": "3",
+        "label": "Porque a normalização exige eliminar todas as chaves estrangeiras",
+        "feedback": "As referências entre relações permitem reconstruir as associações; não devem ser eliminadas."
+      }
+    ]
+  }
+]

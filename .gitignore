@@ -1,0 +1,25 @@
+# Dependências e arquivos gerados
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+*.log
+
+# Configurações e segredos locais
+.env
+.env.*
+!.env.example
+.vercel/
+.DS_Store
+Thumbs.db
+
+# Instruções e configurações locais de agentes
+.agents/
+.codex/
+.aws/
+AGENTS.md
+AGENTS.override.md
+CLAUDE.md
+GEMINI.md
