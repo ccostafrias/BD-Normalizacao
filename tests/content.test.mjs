@@ -13,6 +13,17 @@ test('every authored question has valid choices, sources, relations and a comple
   assert.ok(validateQuestions(questions, modules, documents).length > 0);
   assert.ok(modules.every((m) => questions.some((q) => q.moduleId === m.id)));
 });
+test('every source document points to a real public PDF', () => {
+  const urls = new Set();
+  for (const document of documents) {
+    assert.match(document.url, /^\/materiais\/[a-zA-Z0-9.-]+\.pdf$/);
+    assert.ok(!urls.has(document.url), document.id);
+    urls.add(document.url);
+    const pdf = readFileSync(new URL(`../public${document.url}`, import.meta.url));
+    assert.equal(pdf.subarray(0, 5).toString('ascii'), '%PDF-', document.id);
+    assert.ok(pdf.subarray(-1024).includes(Buffer.from('%%EOF')), document.id);
+  }
+});
 test('key exercises have mathematically verified answers', () => {
   for (const id of ['c-casas', 'c-chave-cd']) {
     const q = questions.find((q) => q.id === id);

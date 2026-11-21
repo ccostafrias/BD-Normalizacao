@@ -38,7 +38,7 @@ export interface SourceDocument {
   id: string;
   title: string;
   fileName: string;
-  libraryId: string;
+  url: string;
   pages: number;
 }
 export interface RelationTable {

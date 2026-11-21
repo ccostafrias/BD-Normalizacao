@@ -118,7 +118,7 @@ export default function GuidePage() {
               <Icon name="external" size={17} />
             </a>)}
           </div>
-          <p className="small muted">Esses links exigem permissão para acessar os arquivos originais. Para estudar com uma cópia própria, localize os mesmos nomes e as páginas indicadas. O quiz funciona sem abrir os PDFs.</p>
+          <p className="small muted">Os PDFs estão disponíveis no próprio site, sem login. Cada material abre em outra aba e só é carregado quando você acessa o link. As páginas citadas no guia e nas questões correspondem à posição no arquivo.</p>
           <div className="editorial-note">
             <h3>Como tratamos as adaptações</h3>
             <p>As listas contêm propostas que o aluno deve julgar, incluindo decomposições incorretas. Uma alternativa do enunciado não é tratada como solução oficial. Novos exemplos seguem os conceitos do material e são identificados como adaptações.</p>
