@@ -12,9 +12,9 @@ export function SourceReferences({ sources }: {
         const doc = documents.find((d) => d.id === source.document)!;
         return <p key={index}><strong>
           {doc.fileName}
-        </strong><br />{source.pages.length === 1 ? 'Página' : 'Páginas'} {source.pages.join(', ')} · {source.kind === 'adapted' ? 'Questão adaptada' : 'Questão original'}<br /><a href={sourceUrl(doc)} target="_blank" rel="noreferrer">Abrir material de origem <Icon name="external" size={13} /></a></p>;
+        </strong><br />{source.pages.length === 1 ? 'Página' : 'Páginas'} {source.pages.join(', ')} · {source.kind === 'adapted' ? 'Questão adaptada' : 'Questão original'}<br /><a href={sourceUrl(doc, source.pages[0])} target="_blank" rel="noreferrer">Abrir material de origem <Icon name="external" size={13} /></a></p>;
       })}
-      <p className="small muted">A abertura do arquivo depende das permissões da conta que o hospedou. O nome e as páginas permitem localizar a fonte na sua cópia.</p>
+      <p className="small muted">Os PDFs estão disponíveis no próprio site, sem login. As páginas indicadas correspondem à posição no arquivo.</p>
     </div>
   </details>;
 }

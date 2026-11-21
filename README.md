@@ -32,7 +32,8 @@ O build executa a verificação de tipos e os testes antes de gerar `dist/`.
 - Laboratório de fecho com cinco exemplos e teste de minimalidade de chaves.
 - Busca que ignora diferenças de acentuação, filtro de dificuldade e revisão de erros.
 - Questões salvas para depois e progresso persistido no navegador.
-- Guia de consulta com referências aos PDFs e às páginas utilizadas.
+- Guia de consulta com 50 verbetes, definições introdutórias, exemplos e links entre conceitos; busca por siglas e nomes sem exigir acentos, índice de A a Z e caminho sugerido para iniciantes.
+- PDFs dos materiais disponíveis no próprio site, sem login, com referências às páginas utilizadas.
 - Rotas próprias, carregamento de páginas sob demanda e layout responsivo.
 - Exportação do progresso para consulta em JSON. Não há importação nesta versão.
 
@@ -61,6 +62,7 @@ src/
   pages/            Composição das telas e rotas
 tests/              Testes de conteúdo, matemática, filtros, persistência e renderização
 docs/               Contrato editorial e decisões técnicas
+public/materiais/   PDFs originais servidos como arquivos estáticos
 ```
 
 React, TypeScript e Vite compõem a base. React Router gerencia as rotas. Os SVGs de ícones vêm exclusivamente do Lucide, por imports nomeados. O adaptador `Icon` transforma os nós oficiais da biblioteca em elementos React; ele não modifica o DOM manualmente.
@@ -73,7 +75,7 @@ Veja [como adicionar conteúdo](docs/CONTEUDO.md) e as [decisões de implementa�
 
 Os conceitos e exercícios foram adaptados de `9.1-Normalizacao.pdf`, `9.3-ExercíciosNormalização.pdf` e `9.4-ExercíciosNormalização.pdf`. Cada questão registra documento e páginas. As hipóteses acrescentadas ficam explícitas no enunciado. As justificativas são adaptações didáticas; não são apresentadas como um gabarito oficial do professor.
 
-Os PDFs não estão redistribuídos no repositório. Os links para os originais exigem as permissões da conta que os hospedou; nomes e páginas continuam disponíveis para quem possui uma cópia própria. O quiz não depende de acesso a esses links.
+Os três PDFs estão incluídos em `public/materiais/` e são publicados junto com o site, com acesso público e sem login. Os nomes originais são preservados na interface; os nomes dos arquivos nas URLs não têm acentos. O Vite copia os PDFs para `dist/materiais/` sem incorporá-los ao JavaScript. Juntos, eles têm cerca de 1,7 MB e só são baixados quando o leitor abre um link, sem aumentar a transferência inicial do quiz. As referências das questões apontam para a primeira página indicada, quando o leitor de PDF suporta essa navegação.
 
 Sem login, backend, telemetria ou chamadas a IA. As respostas ficam em `localStorage`, sob a chave `forma.progress.v1`. O indicador de acerto usa a última resposta de cada questão e não representa uma nota oficial.
 

@@ -6,12 +6,20 @@ Uma questão de um tipo já existente é adicionada apenas ao JSON. Não é nece
 
 1. Acrescente a questão em um array dentro de `src/data/questions/*.json`. Pode criar um arquivo novo nesse diretório; o catálogo usa `import.meta.glob`.
 2. Escolha um `moduleId` existente em `modules.json`. Para criar um módulo, adicione também seus metadados nesse arquivo; as telas o descobrem automaticamente.
-3. Se usar outro documento, registre seu identificador e quantidade de páginas em `documents.json`.
+3. Se usar outro documento, coloque o PDF em `public/materiais/` e registre seu identificador, nome de exibição, URL pública e quantidade de páginas em `documents.json`.
 4. Execute `npm run build`. A validação rejeita IDs duplicados, respostas inválidas, atributos inexistentes, resoluções incompletas e páginas fora do documento.
 5. Revise a matemática e o texto. A validação de formato não demonstra sozinha que um gabarito está correto.
 6. Faça um commit, por exemplo: `feat(content): add exercises about candidate keys`.
 
 ## Contrato
+
+### Materiais de origem
+
+Os PDFs ficam em `public/materiais/` e são servidos em `/materiais/`, sem `/public` na URL. Cada registro de `src/data/documents.json` contém `id`, `title`, `fileName` (nome original exibido), `url` (caminho público absoluto) e `pages`. Use nomes de arquivo sem espaços e sem acentos nas URLs. Esses arquivos são públicos e precisam ser versionados junto com o código.
+
+Ao substituir um PDF, mantenha o caminho estável e confira a contagem e a ordem das páginas citadas pelas questões e pelo guia. O número indicado é a posição da página no arquivo, contando a primeira como 1. Os links nas questões incluem `#page=N` para abrir na primeira página citada em leitores compatíveis.
+
+### Questões
 
 O tipo TypeScript está em `src/types.ts`. Os campos comuns são:
 
@@ -94,3 +102,23 @@ O conjunto inicial inclui testes matemáticos para os casos CASAS, as chaves sob
 Nesse caso, estenda `QuestionType`, a validação e o componente de resposta. Mantenha a regra de correção fora da apresentação e teste a propriedade que torna a correção válida.
 
 Para uma futura decomposição livre, não basta comparar nomes e ordem de tabelas com um gabarito fixo: esquemas equivalentes podem ter nomes e agrupamentos diferentes. Esse recurso exige um avaliador específico.
+
+## Ampliar o guia de consulta
+
+O dicionário está em `src/data/guide.json`, agrupado em uma ordem de aprendizado. Cada verbete contém:
+
+| Campo | Uso |
+| --- | --- |
+| `id` | Identificador estável usado no endereço `/guia#id`; não reutilize um ID de seção |
+| `term` | Nome completo do conceito |
+| `aliases` | Siglas, sinônimos e notações pesquisáveis, também apresentados ao leitor |
+| `text` | Definição introdutória, com a regra formal quando necessária |
+| `example` | Exemplo concreto, com as hipóteses necessárias para interpretá-lo |
+| `detail` | Observação que esclarece uma sutileza ou um erro comum, sob expansão opcional |
+| `related` | IDs de verbetes relacionados; os links levam à definição e limpam a busca |
+
+As referências `document` e `pages` de cada seção indicam a base conceitual do material. Os exemplos e as explicações introdutórias são ampliações didáticas, não transcrições de um gabarito oficial. Ao acrescentar conceitos, confira também suas fontes.
+
+A busca consulta nome, aliases, definição, exemplo e detalhe, ignora acentos e maiúsculas, e coloca nomes e siglas exatos primeiro. A busca fica na URL (`/guia?busca=FNBC`), permitindo compartilhar ou recarregar a consulta. Os IDs antigos das seções continuam válidos.
+
+Os testes verificam as referências entre verbetes, as âncoras, as páginas das fontes, a pesquisa de siglas e a renderização com filtros. Execute `npm run build` antes de registrar a alteração.

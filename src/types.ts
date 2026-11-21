@@ -5,6 +5,25 @@ export interface Dependency {
   from: string[];
   to: string[];
 }
+export interface GuideEntry {
+  id: string;
+  term: string;
+  aliases: string[];
+  text: string;
+  example: string;
+  detail: string;
+  related: string[];
+}
+export interface GuideSection {
+  id: string;
+  title: string;
+  icon: IconName;
+  color: string;
+  intro: string;
+  items: GuideEntry[];
+  document: string;
+  pages: number[];
+}
 export interface Relation {
   name: string;
   attributes: string[];
@@ -19,7 +38,7 @@ export interface SourceDocument {
   id: string;
   title: string;
   fileName: string;
-  libraryId: string;
+  url: string;
   pages: number;
 }
 export interface RelationTable {

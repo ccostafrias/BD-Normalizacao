@@ -59,6 +59,37 @@ test('study routes render with fresh, saved and invalid session state', async (t
       assert.ok(render(await load('ProgressPage')).includes('Todo caminho tem um começo'));
       assert.ok(render(await load('PracticePage', 'ResultsPage'), '/resultado/chaves', '/resultado/:moduleId').includes('0 acertos em 0 respostas'));
     });
+    const Guide = await load('GuidePage');
+    await t.test('guide and question sources link to public PDFs instead of private files', async () => {
+      const { documents } = await vite.ssrLoadModule('/src/data/catalog.ts');
+      const { SourceReferences } = await vite.ssrLoadModule('/src/components/SourceReferences.tsx');
+      const html = render(Guide, '/guia#fontes');
+      for (const document of documents) assert.ok(html.includes(`href="${document.url}"`), document.id);
+      assert.ok(!html.includes('chatgpt.com/library'));
+      assert.ok(!html.includes('exigem permissão'));
+      const reference = renderToStaticMarkup(h(SourceReferences, { sources: [{ document: 'lista', pages: [2], kind: 'adapted' }] }));
+      assert.ok(reference.includes('href="/materiais/9.4-ExerciciosNormalizacao.pdf#page=2"'));
+      assert.ok(reference.includes('sem login'));
+    });
+    await t.test('guide supports bookmarked searches and related links that clear the filter', () => {
+      const html = render(Guide, '/guia?busca=FNBC');
+      assert.ok(html.includes('value="FNBC"'));
+      assert.ok(html.includes('id="bcnf"'));
+      assert.ok(!html.includes('id="relacao"'));
+      assert.ok(html.includes('href="/guia#superchave"'));
+      assert.ok(!html.includes('href="/guia?busca=FNBC#superchave"'));
+      assert.ok(html.includes('Veja um exemplo'));
+      assert.ok(html.includes('role="status"'));
+    });
+    await t.test('guide handles missing terms and retains old section anchors and new entry anchors', () => {
+      const empty = render(Guide, '/guia?busca=naoexistexyz');
+      assert.ok(empty.includes('Ainda não encontramos esse termo'));
+      assert.ok(empty.includes('Ver todos os conceitos'));
+      const full = render(Guide, '/guia#dependencia-funcional');
+      for (const id of ['fundamentos', 'dependencias', 'chaves', 'formas', 'decomposicao', 'avancado', 'fontes', 'dependencia-funcional', '1fn', '5fn']) {
+        assert.ok(full.includes(`id="${id}"`), id);
+      }
+    });
   } finally {
     if (previous) Object.defineProperty(globalThis, 'localStorage', previous);
     else delete globalThis.localStorage;

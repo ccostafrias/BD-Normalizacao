@@ -10,6 +10,6 @@ export const questions: Question[] = validateQuestions(Object.values(files).flat
 export const questionById = new Map(questions.map((q) => [q.id, q]));
 export const questionsByModule = new Map(modules.map((module) => [module.id, questions.filter((q) => q.moduleId === module.id)]));
 export const difficultyLabels = { easy: 'Fácil', medium: 'Intermediário', hard: 'Desafio' } as const;
-export function sourceUrl(document: SourceDocument) {
-  return `https://chatgpt.com/library?file_id=${document.libraryId}&account_id=personal`;
+export function sourceUrl(document: SourceDocument, page?: number) {
+  return `${document.url}${page ? `#page=${page}` : ''}`;
 }
