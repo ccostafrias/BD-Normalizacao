@@ -12,6 +12,7 @@ export function validateQuestions(questions, modules, documents) {
       if (typeof q[field] !== 'string' || !q[field].trim()) fail(`${field} vazio`);
     }
     if (!Array.isArray(q.steps) || !q.steps.length || q.steps.some((s) => !s.title || !s.text)) fail('resolução incompleta');
+    if (q.preparation && ['title', 'text', 'example'].some((field) => typeof q.preparation[field] !== 'string' || !q.preparation[field].trim())) fail('preparação incompleta');
     if (!q.answer?.length || new Set(q.answer).size !== q.answer.length) fail('gabarito vazio ou duplicado');
     const choices = q.type === 'attributes' ? q.relation?.attributes : q.options?.map((o) => o.id);
     if (!choices?.length || new Set(choices).size !== choices.length) fail('opções inválidas');

@@ -22,25 +22,59 @@ test('study routes render with fresh, saved and invalid session state', async (t
   });
   try {
     const { ProgressProvider } = await vite.ssrLoadModule('/src/hooks/useProgress.tsx');
+    const { modules, questionsByModule } = await vite.ssrLoadModule('/src/data/catalog.ts');
     const load = async (name, exported = 'default') => (await vite.ssrLoadModule(`/src/pages/${name}.tsx`))[exported];
     function render(Page, route = '/', pattern = '*') {
       return renderToStaticMarkup(h(MemoryRouter, { initialEntries: [route] }, h(ProgressProvider, null, h(Routes, null, h(Route, { path: pattern, element: h(Page) })))));
     }
-    await t.test('home and catalog display all six learning modules', async () => {
+    await t.test('home and catalog display every learning module in curriculum order', async () => {
       const home = render(await load('HomePage'));
       const catalog = render(await load('CatalogPage'));
       assert.ok(home.includes('Vamos descomplicar?'));
-      assert.equal((home.match(/class="module-card panel"/g) ?? []).length, 6);
-      assert.equal((catalog.match(/class="module-card panel"/g) ?? []).length, 6);
+      assert.equal((home.match(/class="module-card panel"/g) ?? []).length, modules.length);
+      assert.equal((catalog.match(/class="module-card panel"/g) ?? []).length, modules.length);
+      assert.ok(home.indexOf('href="/praticar/fundamentos"') < home.indexOf('href="/praticar/primeiros-passos"'));
+      assert.ok(home.indexOf('href="/praticar/primeiros-passos"') < home.indexOf('href="/praticar/dependencias"'));
+      assert.ok(catalog.includes('Começar do zero'));
     });
     const Practice = await load('PracticePage');
-    await t.test('all six practice modules render an unanswered question', () => {
-      for (const id of ['fundamentos', 'dependencias', 'chaves', 'formas-normais', 'decomposicao', 'avancado']) {
+    await t.test('every practice module renders an unanswered question', () => {
+      for (const { id } of modules) {
         const html = render(Practice, `/praticar/${id}`, '/praticar/:moduleId');
         assert.ok(html.includes('Conferir resposta'), id);
         assert.ok(html.includes('aria-label="Navegar pelas questões"'), id);
         assert.ok(!html.includes('class="solution"'), id);
       }
+    });
+    await t.test('beginner lessons appear before answers on every direct question URL', () => {
+      for (const q of questionsByModule.get('primeiros-passos')) {
+        const html = render(Practice, `/praticar/primeiros-passos?questao=${q.id}`, '/praticar/:moduleId');
+        assert.ok(html.includes(q.title), q.id);
+        assert.ok(html.includes(q.preparation.text), q.id);
+        assert.ok(html.indexOf('aria-label="Antes de responder"') < html.indexOf('Escolha uma alternativa.'), q.id);
+        assert.ok(html.includes('Ver uma nota fiscal passar por 1FN, 2FN e 3FN'));
+      }
+      assert.ok(!render(Practice, '/praticar/chaves', '/praticar/:moduleId').includes('primer-title'));
+    });
+    await t.test('a saved beginner mistake restores feedback, review, and bookmarks', () => {
+      stored = JSON.stringify({ version: 1, attempts: { 'intro-classificar-2fn': { questionId: 'intro-classificar-2fn', selected: ['3'], correct: false, hintUsed: true, timestamp: 1 } }, bookmarks: ['intro-classificar-2fn'] });
+      const html = render(Practice, '/praticar/primeiros-passos?questao=intro-classificar-2fn&modo=revisao', '/praticar/:moduleId');
+      assert.ok(html.includes('Chave simples já garante 3FN?'));
+      assert.ok(html.includes('Cliente não determina a nota inteira.'));
+      assert.ok(html.includes('Tentar novamente'));
+      assert.ok(html.includes('aria-pressed="true"'));
+      assert.ok(render(Practice, '/praticar/primeiros-passos?modo=salvas', '/praticar/:moduleId').includes('Chave simples já garante 3FN?'));
+      stored = null;
+    });
+    await t.test('the learning path recommends the beginner bridge after fundamentals', async () => {
+      const fundamentals = questionsByModule.get('fundamentos');
+      stored = JSON.stringify({ version: 1, attempts: Object.fromEntries(fundamentals.map((q) => [q.id, { questionId: q.id, selected: q.answer, correct: true, hintUsed: false, timestamp: 1 }])), bookmarks: [] });
+      assert.ok(render(await load('HomePage')).includes('href="/praticar/primeiros-passos?questao=intro-fn"'));
+      const beginner = questionsByModule.get('primeiros-passos');
+      stored = JSON.stringify({ version: 1, attempts: Object.fromEntries(beginner.map((q) => [q.id, { questionId: q.id, selected: q.answer, correct: true, hintUsed: false, timestamp: 1 }])), bookmarks: [] });
+      const results = render(await load('PracticePage', 'ResultsPage'), '/resultado/primeiros-passos', '/resultado/:moduleId');
+      assert.ok(results.includes('/praticar/dependencias'));
+      stored = null;
     });
     await t.test('unknown module and empty review filter produce useful recovery actions', () => {
       assert.ok(render(Practice, '/praticar/inexistente', '/praticar/:moduleId').includes('Módulo não encontrado'));

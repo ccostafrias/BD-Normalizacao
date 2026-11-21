@@ -30,6 +30,7 @@ O tipo TypeScript está em `src/types.ts`. Os campos comuns são:
 | `type` | `choice`, `multi-choice` ou `attributes` |
 | `difficulty` | `easy`, `medium` ou `hard` |
 | `title`, `prompt` | Título curto e enunciado completo |
+| `preparation` | Explicação opcional com `title`, `text` e `example`, exibida antes do enunciado e das alternativas |
 | `assumption` | Hipótese adicional necessária para interpretar o problema, quando houver |
 | `relation` | Nome, atributos e DFs; opcional em questões conceituais |
 | `options` | Alternativas com `id`, `label` e `feedback`; omitidas em `attributes` |
@@ -122,3 +123,11 @@ As referências `document` e `pages` de cada seção indicam a base conceitual d
 A busca consulta nome, aliases, definição, exemplo e detalhe, ignora acentos e maiúsculas, e coloca nomes e siglas exatos primeiro. A busca fica na URL (`/guia?busca=FNBC`), permitindo compartilhar ou recarregar a consulta. Os IDs antigos das seções continuam válidos.
 
 Os testes verificam as referências entre verbetes, as âncoras, as páginas das fontes, a pesquisa de siglas e a renderização com filtros. Execute `npm run build` antes de registrar a alteração.
+
+## Primeiro contato com formas normais
+
+O módulo `primeiros-passos` fica entre Fundamentos e Dependências. As questões em `src/data/questions/primeiros-passos.json` apresentam uma preparação visível antes da resposta, avançando de siglas e valores atômicos para chaves, DFs, dependências parciais e transitivas e classificação em 1FN, 2FN e 3FN. Todos os exemplos são adaptações dos slides com hipóteses explícitas.
+
+`NormalizationPrimer` apresenta o roteiro e uma nota fiscal resolvida em expansão opcional, com referências próprias. O teste de 3FN simplificado fica limitado aos exemplos com uma única chave candidata; a definição geral está disponível na mesma seção. Não use “nenhuma dependência transitiva” como definição universal de 3FN.
+
+Os testes introdutórios enumeram as consequências das DFs para confirmar chaves e classificação e verificam cobertura de atributos, preservação de dependências e junção sem perda das decomposições. As telas são testadas com URLs diretas, revisão, questões salvas e recomendação do próximo módulo.

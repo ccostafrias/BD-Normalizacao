@@ -1,6 +1,6 @@
 # Forma — Normalização na prática
 
-Aplicação de estudo de normalização de bancos de dados, em português, com questões graduais e resolução comentada. O banco inicial contém 28 questões em seis módulos, dos fundamentos até BCNF, 4FN e 5FN.
+Aplicação de estudo de normalização de bancos de dados, em português, com questões graduais e resolução comentada. O banco contém 40 questões em sete módulos, dos fundamentos até BCNF, 4FN e 5FN.
 
 ## Executar
 
@@ -25,7 +25,8 @@ O build executa a verificação de tipos e os testes antes de gerar `dist/`.
 
 ## O que já funciona
 
-- Percurso com seis módulos e dificuldades graduais.
+- Percurso com sete módulos e dificuldades graduais.
+- Módulo “1FN, 2FN e 3FN do zero” após Fundamentos: 12 exercícios introdutórios com preparação antes das respostas, testes em ordem e um exemplo de nota fiscal resolvido.
 - Questões de alternativa única, múltipla seleção e seleção de atributos.
 - Dicas, feedback das alternativas e resolução em etapas.
 - Tabelas resultantes com indicação dos atributos da chave.
