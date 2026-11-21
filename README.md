@@ -78,7 +78,7 @@ Os conceitos e exercícios foram adaptados de `9.1-Normalizacao.pdf`, `9.3-Exerc
 
 Os três PDFs estão incluídos em `public/materiais/` e são publicados junto com o site, com acesso público e sem login. Os nomes originais são preservados na interface; os nomes dos arquivos nas URLs não têm acentos. O Vite copia os PDFs para `dist/materiais/` sem incorporá-los ao JavaScript. Juntos, eles têm cerca de 1,7 MB e só são baixados quando o leitor abre um link, sem aumentar a transferência inicial do quiz. As referências das questões apontam para a primeira página indicada, quando o leitor de PDF suporta essa navegação.
 
-Sem login, backend, telemetria ou chamadas a IA. As respostas ficam em `localStorage`, sob a chave `forma.progress.v1`. O indicador de acerto usa a última resposta de cada questão e não representa uma nota oficial.
+Sem login, backend, telemetria ou chamadas a IA. As respostas ficam em `localStorage`, sob a chave `forma.progress.v2` (com migração automática do progresso anterior em `forma.progress.v1`). O indicador de acerto usa a última resposta de cada questão e não representa uma nota oficial.
 
 ## Validação e limites
 
@@ -87,3 +87,5 @@ Os testes verificam as DFs calculáveis, chaves, integridade do conteúdo e das 
 Na criação desta versão, a verificação TypeScript, os 23 testes e o build de produção passaram. A inspeção visual e os testes de interação em navegador ficaram pendentes porque o ambiente de execução bloqueou a abertura do servidor local com `EPERM`. Responsividade e acessibilidade foram implementadas, mas ainda precisam dessa conferência em navegador real.
 
 Esta versão corrige escolhas estruturadas. Ela não valida decomposições livres digitadas pelo aluno e não faz sincronização de progresso entre dispositivos.
+
+O armazenamento do progresso é atualizado imediatamente ao conferir uma resposta. Eventos de sincronização entre abas somente atualizam a memória, sem regravar cópias filtradas. O espaço de armazenamento atual é separado do usado por versões antigas abertas em outras abas para evitar que elas apaguem respostas de questões novas. A migração conserva os acertos, erros e favoritos que ainda estiverem armazenados; respostas já apagadas pela versão antiga não podem ser reconstruídas.

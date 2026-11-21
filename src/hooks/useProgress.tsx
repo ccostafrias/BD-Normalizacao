@@ -1,45 +1,25 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import type { ReactNode } from 'react';
-import { emptyProgress, parseProgress, STORAGE_KEY } from '../lib/progress.mjs';
+import { createProgressStore, STORAGE_KEY } from '../lib/progress.mjs';
 import { questionById, questions } from '../data/catalog';
-import type { Attempt, Progress } from '../types';
+import type { Progress } from '../types';
 
 const validIds = new Set(questionById.keys());
-function readProgress(): Progress {
-  try {
-    return parseProgress(localStorage.getItem(STORAGE_KEY), validIds) as Progress;
-  }
-  catch {
-    return emptyProgress() as Progress;
-  }
-}
 function useProgressState() {
-  const [progress, setProgress] = useState<Progress>(readProgress);
-  const [storageAvailable, setStorageAvailable] = useState(true);
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-      setStorageAvailable(true);
-    }
-    catch {
-      setStorageAvailable(false);
-    }
-  }, [progress]);
+  const [store] = useState(() => createProgressStore(() => localStorage, validIds));
+  const snapshot = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
+  const progress = snapshot.progress as Progress;
+  const { storageAvailable } = snapshot;
+  const { recordAttempt, toggleBookmark, resetProgress } = store;
   useEffect(() => {
     const sync = (event: StorageEvent) => {
       if (event.key === STORAGE_KEY || event.key === null)
-        setProgress(readProgress());
+        store.sync();
     };
     window.addEventListener('storage', sync);
+    store.initialize();
     return () => window.removeEventListener('storage', sync);
-  }, []);
-  const recordAttempt = useCallback((attempt: Attempt) => {
-    setProgress((previous) => ({ ...previous, attempts: { ...previous.attempts, [attempt.questionId]: attempt } }));
-  }, []);
-  const toggleBookmark = useCallback((id: string) => {
-    setProgress((previous) => ({ ...previous, bookmarks: previous.bookmarks.includes(id) ? previous.bookmarks.filter((item) => item !== id) : [...previous.bookmarks, id] }));
-  }, []);
-  const resetProgress = useCallback(() => setProgress(emptyProgress() as Progress), []);
+  }, [store]);
   const stats = useMemo(() => {
     const attempts = Object.values(progress.attempts);
     const correct = attempts.filter((a) => a.correct).length;
