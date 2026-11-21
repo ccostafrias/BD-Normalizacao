@@ -623,6 +623,32 @@ p { line-height: 1.65; }
   .continue-strip { flex-wrap: wrap; }
   .continue-strip > a { margin-left: 31px; }
 }
+.beginner-invitation { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; padding: 24px; margin-bottom: 24px; }
+.beginner-invitation > div { flex: 1 1 260px; }
+.beginner-invitation h2 { font-size: 1.125rem; }
+.beginner-invitation p { margin-top: 6px; color: #526c89; }
+.normalization-primer { padding: clamp(20px, 4vw, 30px); margin-bottom: 24px; }
+.normalization-primer > p, .primer-example p { margin-top: 14px; color: #48617f; overflow-wrap: anywhere; }
+.normal-form-checklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; list-style-position: inside; padding: 0; margin: 22px 0; }
+.normal-form-checklist > li { padding: 20px; background: var(--blue); border-radius: 15px; }
+.normal-form-checklist > li:nth-child(2) { background: var(--mint); }
+.normal-form-checklist > li:nth-child(3) { background: var(--peach); }
+.normal-form-checklist h3 { display: inline; font-size: 1rem; }
+.normal-form-checklist p { margin-top: 12px; color: #48617f; font-size: 0.9375rem; }
+.primer-example { margin-top: 18px; padding: 16px 20px; border: 1px solid #d8e2ef; border-radius: 12px; }
+.primer-example summary { font-weight: 650; line-height: 1.5; color: #2858a4; }
+.primer-example h3 { margin-top: 24px; }
+.primer-schemas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; }
+.primer-schemas .schema-table { flex: 1 1 180px; min-width: 0; }
+.primer-table-scroll { overflow-x: auto; margin-top: 16px; }
+.primer-table-scroll table { border-collapse: collapse; width: 100%; font-size: 0.875rem; }
+.primer-table-scroll caption { text-align: left; color: #48617f; margin-bottom: 10px; }
+.primer-table-scroll th, .primer-table-scroll td { padding: 12px; border: 1px solid #d8e2ef; text-align: left; }
+.primer-table-scroll th { background: var(--blue); }
+.question-preparation { background: var(--mint); padding: 20px; border-radius: 14px; margin: 20px 0; }
+.question-preparation h3 { font-size: 1.0625rem; }
+.question-preparation > p:not(.field-label) { margin-top: 12px; color: #355b50; }
+.preparation-example { padding-top: 12px; border-top: 1px solid #c8dfd1; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }

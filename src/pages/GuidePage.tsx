@@ -52,6 +52,7 @@ export default function GuidePage() {
           <Link to={`/guia#${id}`}><span aria-hidden="true">{index + 1}</span>{entryById.get(id)!.term}</Link>
         </li>)}
       </ol>
+      <p>Quer aprender a diferenciar as formas normais? <Link className="text-link" to="/praticar/primeiros-passos">Aprender 1FN, 2FN e 3FN do zero</Link></p>
     </section>
     <div className="guide-search panel" role="search" aria-label="Buscar no guia de consulta">
       <label className="search-field" htmlFor="guide-search">

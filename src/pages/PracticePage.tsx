@@ -9,6 +9,7 @@ import { AnswerOptions } from '../components/AnswerOptions';
 import { SolutionView } from '../components/SolutionView';
 import { RelationView } from '../components/RelationView';
 import { SourceReferences } from '../components/SourceReferences';
+import { NormalizationPrimer } from '../components/NormalizationPrimer';
 import { Icon } from '../components/ui/Icon';
 import { Badge, Button, ButtonLink, EmptyState, PageHeading, ProgressBar } from '../components/ui/Primitives';
 
@@ -23,7 +24,7 @@ function QuestionRunner({ question, next, previous, index, count, resultPath }: 
   const quiz = useQuiz(question);
   const { progress, toggleBookmark } = useProgress();
   const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => { heading.current?.focus(); }, [question.id]);
+  useEffect(() => { heading.current?.focus({ preventScroll: question.moduleId === 'primeiros-passos' && index === 0 }); }, [question.id, question.moduleId, index]);
   const saved = progress.bookmarks.includes(question.id);
   return <article className="question-card panel">
     <div className="section-inline question-meta">
@@ -43,6 +44,12 @@ function QuestionRunner({ question, next, previous, index, count, resultPath }: 
     <h2 ref={heading} tabIndex={-1} className="question-title">
       {question.title}
     </h2>
+    {question.preparation && <section className="question-preparation" aria-label="Antes de responder">
+      <p className="field-label">ANTES DE RESPONDER</p>
+      <h3>{question.preparation.title}</h3>
+      <p>{question.preparation.text}</p>
+      <p className="preparation-example"><strong>Por exemplo: </strong>{question.preparation.example}</p>
+    </section>}
     <p className="question-prompt">
       {question.prompt}
     </p>
@@ -112,6 +119,7 @@ function PracticeSession({ moduleId }: {
         {module.description}
       </p>
     </div>
+    {module.id === 'primeiros-passos' && <NormalizationPrimer />}
     <div className="practice-layout">
       <QuestionRunner key={question.id} question={question} index={index} count={list.length} next={list[index + 1] ? () => goTo(list[index + 1].id) : undefined} previous={list[index - 1] ? () => goTo(list[index - 1].id) : undefined} resultPath={`/resultado/${module.id}`} />
       <aside className="practice-sidebar">

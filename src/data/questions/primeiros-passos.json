@@ -1,0 +1,942 @@
+[
+  {
+    "id": "intro-fn",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Antes das siglas: o que é FN?",
+    "preparation": {
+      "title": "Uma condição de organização",
+      "text": "FN é a sigla de forma normal. Cada forma reúne condições para organizar uma tabela. As condições se acumulam: 2FN exige 1FN, e 3FN exige 2FN.",
+      "example": "Pense em uma sequência de verificações: valores nas células, dependência da chave inteira e dependências por intermediários."
+    },
+    "prompt": "Uma tabela atende à 3FN. O que podemos afirmar sobre 1FN e 2FN?",
+    "options": [
+      {
+        "id": "1",
+        "label": "Também atende à 1FN e à 2FN.",
+        "feedback": "Sim. As condições anteriores continuam valendo."
+      },
+      {
+        "id": "2",
+        "label": "Não atende mais à 1FN, porque avançou.",
+        "feedback": "Avançar não desfaz as condições anteriores. Uma tabela em 3FN continua em 1FN."
+      },
+      {
+        "id": "3",
+        "label": "Nada: cada forma é independente.",
+        "feedback": "As formas normais são cumulativas. É preciso passar pelas condições anteriores."
+      }
+    ],
+    "answer": [
+      "1"
+    ],
+    "hint": "Leia a ordem: 1FN → 2FN → 3FN.",
+    "explanation": "Estar em 3FN inclui atender às condições de 1FN e 2FN. O número não é a quantidade de tabelas nem de colunas.",
+    "steps": [
+      {
+        "title": "Entenda a sigla",
+        "text": "FN significa forma normal, uma condição sobre a organização da relação."
+      },
+      {
+        "title": "Acumule as condições",
+        "text": "A terceira forma inclui a segunda, que inclui a primeira."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          12,
+          13
+        ],
+        "kind": "adapted"
+      }
+    ]
+  },
+  {
+    "id": "intro-celula",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "1FN: olhe para uma célula",
+    "preparation": {
+      "title": "Atômico: um valor do tipo esperado",
+      "text": "Na 1FN, cada célula guarda um único valor do domínio da coluna. Uma lista de vários produtos dentro de uma célula é um grupo de valores. Um nome completo pode ser tratado como um único nome.",
+      "example": "Cliente = “Ana Maria” pode ser um nome. Produtos = “lápis, caderno”, representando dois produtos distintos, é uma lista."
+    },
+    "prompt": "Na tabela COMPRA(Nota, NomeCliente, Produtos), qual situação viola a 1FN?",
+    "options": [
+      {
+        "id": "1",
+        "label": "NomeCliente guarda “Ana Maria”.",
+        "feedback": "Um nome completo pode ser um valor atômico no modelo. Ter espaços não viola a 1FN."
+      },
+      {
+        "id": "2",
+        "label": "Produtos guarda a lista “lápis, caderno” em uma única célula.",
+        "feedback": "Isso viola a 1FN: a célula agrupa dois produtos distintos."
+      },
+      {
+        "id": "3",
+        "label": "O mesmo cliente aparece em duas notas.",
+        "feedback": "Repetir o cliente em linhas distintas não viola, por si só, a 1FN."
+      }
+    ],
+    "answer": [
+      "2"
+    ],
+    "hint": "Procure vários itens dentro da mesma célula, e não palavras dentro de um nome.",
+    "explanation": "A violação é a lista de produtos dentro da célula. A 1FN não proíbe repetir valores em linhas diferentes.",
+    "steps": [
+      {
+        "title": "Identifique a unidade do dado",
+        "text": "NomeCliente guarda um nome; Produtos está guardando vários produtos."
+      },
+      {
+        "title": "Aplique a 1FN",
+        "text": "O grupo de produtos precisa ser representado por registros próprios."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          14,
+          15
+        ],
+        "kind": "adapted"
+      }
+    ]
+  },
+  {
+    "id": "intro-abrir-lista",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Como chegar à 1FN?",
+    "preparation": {
+      "title": "Transforme o grupo em registros",
+      "text": "Se uma nota contém vários itens, represente cada item em sua própria linha. Conserve o número da nota para saber a qual compra cada item pertence.",
+      "example": "A nota 101 contém os códigos P1 e P2. Você pode ter (101, P1) e (101, P2), em vez de (101, [P1, P2])."
+    },
+    "prompt": "Qual representação de ITEM_NOTA(Nota, Código) elimina a lista e conserva os dois itens da nota 205?",
+    "options": [
+      {
+        "id": "1",
+        "label": "Uma linha: (205, [P3, P4]).",
+        "feedback": "A lista continua dentro de uma célula; o problema da 1FN permanece."
+      },
+      {
+        "id": "2",
+        "label": "Uma linha: (205, P3).",
+        "feedback": "Uma célula tem um valor, mas o item P4 foi perdido. É preciso manter os dois itens."
+      },
+      {
+        "id": "3",
+        "label": "Duas linhas: (205, P3) e (205, P4).",
+        "feedback": "Cada código tem sua linha e o número da nota mantém a ligação."
+      }
+    ],
+    "answer": [
+      "3"
+    ],
+    "hint": "Cada item precisa de uma linha, e ambos devem continuar associados à nota.",
+    "explanation": "As duas linhas eliminam o grupo repetido sem apagar itens. Isso resolve a 1FN; ainda será necessário analisar dependências para avaliar 2FN e 3FN.",
+    "steps": [
+      {
+        "title": "Abra o grupo",
+        "text": "Crie uma linha para P3 e outra para P4."
+      },
+      {
+        "title": "Preserve a ligação",
+        "text": "Repita a nota 205 nas duas linhas. Repetir a nota é permitido na 1FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          15
+        ],
+        "kind": "adapted"
+      }
+    ]
+  },
+  {
+    "id": "intro-seta",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Leia a seta sem decorar",
+    "preparation": {
+      "title": "DF significa dependência funcional",
+      "text": "X → Y lê-se “X determina Y”. Se duas linhas têm o mesmo X, precisam ter o mesmo Y. Essa é uma regra do domínio: não basta uma coincidência nos dados atuais.",
+      "example": "Se Código → Descrição, toda ocorrência do código P1 precisa ter a mesma descrição cadastrada."
+    },
+    "prompt": "A regra do cadastro é Código → Descrição. Qual leitura está correta?",
+    "options": [
+      {
+        "id": "1",
+        "label": "O mesmo código exige a mesma descrição.",
+        "feedback": "É essa a direção da seta: o código determina a descrição."
+      },
+      {
+        "id": "2",
+        "label": "A mesma descrição sempre identifica um único código.",
+        "feedback": "Essa é a seta inversa, Descrição → Código, que não foi informada."
+      },
+      {
+        "id": "3",
+        "label": "Um código só pode aparecer em uma linha.",
+        "feedback": "Um código pode aparecer em várias notas. A regra exige a mesma descrição nessas ocorrências."
+      }
+    ],
+    "answer": [
+      "1"
+    ],
+    "hint": "A seta parte da informação que determina a outra.",
+    "explanation": "Código → Descrição não diz que Código identifica a linha inteira nem que a seta possa ser invertida.",
+    "steps": [
+      {
+        "title": "Fixe o lado esquerdo",
+        "text": "Imagine duas linhas com o mesmo código."
+      },
+      {
+        "title": "Compare o lado direito",
+        "text": "As descrições precisam concordar. Nada exige que os números das notas sejam iguais."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          17
+        ],
+        "kind": "adapted"
+      }
+    ]
+  },
+  {
+    "id": "intro-chave",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Por que a chave tem duas partes?",
+    "preparation": {
+      "title": "Chave candidata identifica a linha sem sobras",
+      "text": "Uma chave candidata reúne informações suficientes para identificar um registro, sem atributos dispensáveis. Chave composta usa mais de um atributo. Aqui, cada material aparece no máximo uma vez por nota.",
+      "example": "Nota sozinha pode ter vários materiais; Código sozinho pode aparecer em várias notas. Juntos, Nota e Código identificam um item."
+    },
+    "prompt": "Em ITEM_NOTA, qual conjunto identifica cada item sem atributos sobrando?",
+    "options": [
+      {
+        "id": "1",
+        "label": "Só Nota.",
+        "feedback": "Uma nota pode conter vários materiais; falta distinguir o código."
+      },
+      {
+        "id": "2",
+        "label": "Nota e Código.",
+        "feedback": "O par identifica o item. Nenhuma das duas partes sozinha é suficiente."
+      },
+      {
+        "id": "3",
+        "label": "Só Código.",
+        "feedback": "O mesmo material pode aparecer em notas diferentes; falta distinguir a nota."
+      }
+    ],
+    "answer": [
+      "2"
+    ],
+    "hint": "Uma informação distingue a compra; a outra distingue o material dentro dela.",
+    "explanation": "A única chave candidata é (Nota, Código). Quantidade depende do par; Descrição pode ser descoberta apenas com Código.",
+    "steps": [
+      {
+        "title": "Teste as partes",
+        "text": "Nota sozinha não distingue itens; Código sozinho não distingue compras."
+      },
+      {
+        "title": "Junte o necessário",
+        "text": "O par identifica a linha inteira e nenhuma parte pode ser retirada."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          21,
+          34,
+          35
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "ITEM_NOTA",
+      "attributes": [
+        "Nota",
+        "Código",
+        "Quantidade",
+        "Descrição"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota",
+            "Código"
+          ],
+          "to": [
+            "Quantidade"
+          ]
+        },
+        {
+          "from": [
+            "Código"
+          ],
+          "to": [
+            "Descrição"
+          ]
+        }
+      ]
+    },
+    "assumption": "Cada material aparece no máximo uma vez por nota. Considere apenas as DFs exibidas e suas consequências; (Nota, Código) é a única chave candidata."
+  },
+  {
+    "id": "intro-parcial",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "2FN: qual informação usa só parte da chave?",
+    "preparation": {
+      "title": "Dependência parcial: uma parte basta",
+      "text": "Além da 1FN, a 2FN exige que cada atributo fora de todas as chaves dependa da chave inteira. Se uma parte própria da chave já determina esse atributo, a dependência é parcial e viola a 2FN.",
+      "example": "Com chave (Aluno, Disciplina), se Aluno → NomeAluno, o nome usa só Aluno. Já a nota da avaliação pode precisar de Aluno e Disciplina juntos."
+    },
+    "prompt": "A chave candidata de ITEM_NOTA é (Nota, Código). Qual regra mostra a violação da 2FN?",
+    "options": [
+      {
+        "id": "1",
+        "label": "(Nota, Código) → Quantidade.",
+        "feedback": "Quantidade precisa da chave inteira. Essa dependência não é parcial."
+      },
+      {
+        "id": "2",
+        "label": "O valor de Nota aparece em várias linhas.",
+        "feedback": "Repetir um valor não basta para identificar uma violação da 2FN; analise as dependências."
+      },
+      {
+        "id": "3",
+        "label": "Código → Descrição.",
+        "feedback": "Código é só uma parte da chave e Descrição não pertence à chave. É a dependência parcial procurada."
+      }
+    ],
+    "answer": [
+      "3"
+    ],
+    "hint": "Qual lado esquerdo é apenas uma parte de (Nota, Código)?",
+    "explanation": "Descrição depende só de Código, parte própria da única chave candidata. Portanto, ITEM_NOTA está em 1FN, mas falha na 2FN.",
+    "steps": [
+      {
+        "title": "Marque a chave",
+        "text": "Nota e Código são os atributos da única chave candidata."
+      },
+      {
+        "title": "Verifique os outros atributos",
+        "text": "Quantidade precisa do par; Descrição só precisa de Código. A segunda é a dependência parcial indevida."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          21,
+          34,
+          35
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "ITEM_NOTA",
+      "attributes": [
+        "Nota",
+        "Código",
+        "Quantidade",
+        "Descrição"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota",
+            "Código"
+          ],
+          "to": [
+            "Quantidade"
+          ]
+        },
+        {
+          "from": [
+            "Código"
+          ],
+          "to": [
+            "Descrição"
+          ]
+        }
+      ]
+    },
+    "assumption": "Os valores são atômicos. A única chave candidata é (Nota, Código)."
+  },
+  {
+    "id": "intro-separar-2fn",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Como corrigir a dependência parcial?",
+    "preparation": {
+      "title": "Guarde cada fato junto de seu identificador",
+      "text": "Para retirar Código → Descrição da tabela de itens, crie o cadastro MATERIAL(Código, Descrição). Conserve Código no item para ligar o material à nota. Quantidade continua vinculada ao par (Nota, Código).",
+      "example": "Se Aluno → NomeAluno, você pode separar ALUNO(Aluno, NomeAluno) e conservar Aluno nos registros de matrícula."
+    },
+    "prompt": "Qual separação resolve a dependência parcial de ITEM_NOTA sem perder a quantidade de cada item?",
+    "options": [
+      {
+        "id": "1",
+        "label": "ITEM_NOTA(Nota, Código, Quantidade) e MATERIAL(Código, Descrição).",
+        "feedback": "A descrição fica com o material; a quantidade permanece com a nota e o código."
+      },
+      {
+        "id": "2",
+        "label": "ITEM_NOTA(Nota, Código) e MATERIAL(Código, Descrição, Quantidade).",
+        "feedback": "Quantidade varia entre notas. Código sozinho não determina Quantidade; a quantidade perderia sua ligação com a nota."
+      },
+      {
+        "id": "3",
+        "label": "ITEM_NOTA(Nota, Código, Quantidade), apagando Descrição.",
+        "feedback": "Apagar o atributo perde uma informação que a decomposição precisa conservar."
+      }
+    ],
+    "answer": [
+      "1"
+    ],
+    "hint": "Separe a descrição, mas mantenha as duas informações necessárias para identificar a quantidade.",
+    "explanation": "A decomposição guarda a descrição uma vez por material e mantém Código nas duas tabelas. A ligação por Código recupera a descrição de cada item.",
+    "steps": [
+      {
+        "title": "Separe o fato sobre o material",
+        "text": "Código determina Descrição, então os dois formam MATERIAL."
+      },
+      {
+        "title": "Mantenha o fato sobre o item",
+        "text": "Quantidade continua junto de Nota e Código.",
+        "tables": [
+          {
+            "name": "ITEM_NOTA",
+            "attributes": [
+              "Nota",
+              "Código",
+              "Quantidade"
+            ],
+            "key": [
+              "Nota",
+              "Código"
+            ]
+          },
+          {
+            "name": "MATERIAL",
+            "attributes": [
+              "Código",
+              "Descrição"
+            ],
+            "key": [
+              "Código"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          34,
+          35,
+          37
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "ITEM_NOTA",
+      "attributes": [
+        "Nota",
+        "Código",
+        "Quantidade",
+        "Descrição"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota",
+            "Código"
+          ],
+          "to": [
+            "Quantidade"
+          ]
+        },
+        {
+          "from": [
+            "Código"
+          ],
+          "to": [
+            "Descrição"
+          ]
+        }
+      ]
+    },
+    "assumption": "Os valores são atômicos; a única chave candidata é (Nota, Código). Código não determina Quantidade."
+  },
+  {
+    "id": "intro-transitiva",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "3FN: encontre o intermediário",
+    "preparation": {
+      "title": "Dependência transitiva: chegar por outro atributo",
+      "text": "Uma tabela pode estar em 2FN e ainda misturar dados de entidades diferentes. Com uma única chave, procure uma sequência chave → atributo fora da chave → outro atributo fora da chave. Esse intermediário pode revelar uma violação da 3FN.",
+      "example": "Pedido → Cliente e Cliente → Endereço permitem chegar ao endereço por meio do cliente. Um cliente pode fazer vários pedidos."
+    },
+    "prompt": "Em NOTA, Nota → Cliente e Cliente → NomeCliente. Qual é o intermediário entre Nota e NomeCliente?",
+    "options": [
+      {
+        "id": "1",
+        "label": "NomeCliente.",
+        "feedback": "NomeCliente é o destino da sequência. O intermediário fica entre Nota e NomeCliente."
+      },
+      {
+        "id": "2",
+        "label": "Cliente.",
+        "feedback": "Nota determina Cliente, e Cliente determina NomeCliente. Cliente é o intermediário."
+      },
+      {
+        "id": "3",
+        "label": "Não há intermediário: a chave tem uma coluna.",
+        "feedback": "Uma chave simples impede dependências parciais não vazias, mas ainda pode existir dependência transitiva."
+      }
+    ],
+    "answer": [
+      "2"
+    ],
+    "hint": "Leia a sequência Nota → Cliente → NomeCliente e observe o termo central.",
+    "explanation": "Cliente não identifica uma nota, pois um cliente pode ter várias notas. O nome é informação do cliente: Cliente → NomeCliente viola a 3FN desta relação.",
+    "steps": [
+      {
+        "title": "Siga as duas setas",
+        "text": "Nota leva a Cliente; Cliente leva a NomeCliente."
+      },
+      {
+        "title": "Examine o intermediário",
+        "text": "Cliente não é superchave de NOTA e NomeCliente não é primário. A dependência viola a 3FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          36,
+          38,
+          39
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "NOTA",
+      "attributes": [
+        "Nota",
+        "Cliente",
+        "NomeCliente"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota"
+          ],
+          "to": [
+            "Cliente"
+          ]
+        },
+        {
+          "from": [
+            "Cliente"
+          ],
+          "to": [
+            "NomeCliente"
+          ]
+        }
+      ]
+    },
+    "assumption": "Os valores são atômicos. Nota é a única chave candidata; um cliente pode ter várias notas e cada cliente tem um nome cadastrado."
+  },
+  {
+    "id": "intro-separar-3fn",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Como corrigir a dependência transitiva?",
+    "preparation": {
+      "title": "Separe os dados da outra entidade",
+      "text": "Se o nome pertence ao cliente, guarde-o em CLIENTE(Cliente, NomeCliente). Em NOTA, mantenha Nota e Cliente. Assim, a ligação continua possível e o nome não precisa ser atualizado em todas as notas.",
+      "example": "Em PEDIDO(Pedido, Cliente, Endereço), a separação segue o cliente que determina Endereço, conservando Cliente em PEDIDO."
+    },
+    "prompt": "Qual decomposição resolve o problema de NOTA mantendo a associação de cada nota ao cliente?",
+    "options": [
+      {
+        "id": "1",
+        "label": "NOTA(Nota, Cliente) e NOMES(Nota, NomeCliente).",
+        "feedback": "O nome continua vinculado à nota e repetido por compra. Não foi isolado o fato Cliente → NomeCliente."
+      },
+      {
+        "id": "2",
+        "label": "NOTA(Nota) e CLIENTE(Cliente, NomeCliente).",
+        "feedback": "Nenhuma tabela liga Nota a Cliente. A associação de cada nota ao seu cliente foi perdida."
+      },
+      {
+        "id": "3",
+        "label": "NOTA(Nota, Cliente) e CLIENTE(Cliente, NomeCliente).",
+        "feedback": "O nome fica no cadastro do cliente e Cliente mantém a ligação com a nota."
+      }
+    ],
+    "answer": [
+      "3"
+    ],
+    "hint": "Qual atributo precisa aparecer nas duas tabelas para manter a associação?",
+    "explanation": "A decomposição usa Cliente como ligação. O nome passa a depender da chave de CLIENTE; em NOTA restam apenas Nota e Cliente.",
+    "steps": [
+      {
+        "title": "Identifique o fato separado",
+        "text": "Cliente → NomeCliente vai para CLIENTE."
+      },
+      {
+        "title": "Preserve a referência",
+        "text": "Conserve Cliente em NOTA para relacionar a compra ao cadastro.",
+        "tables": [
+          {
+            "name": "NOTA",
+            "attributes": [
+              "Nota",
+              "Cliente"
+            ],
+            "key": [
+              "Nota"
+            ]
+          },
+          {
+            "name": "CLIENTE",
+            "attributes": [
+              "Cliente",
+              "NomeCliente"
+            ],
+            "key": [
+              "Cliente"
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          38,
+          39,
+          40,
+          41,
+          42
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "NOTA",
+      "attributes": [
+        "Nota",
+        "Cliente",
+        "NomeCliente"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota"
+          ],
+          "to": [
+            "Cliente"
+          ]
+        },
+        {
+          "from": [
+            "Cliente"
+          ],
+          "to": [
+            "NomeCliente"
+          ]
+        }
+      ]
+    },
+    "assumption": "Os valores são atômicos; Nota é a única chave candidata. Um cliente pode ter várias notas."
+  },
+  {
+    "id": "intro-classificar-1fn",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Agora confira: passa em 1FN, mas…",
+    "preparation": {
+      "title": "Teste em ordem e pare na primeira falha",
+      "text": "Primeiro veja se os valores são atômicos. Depois procure dependência parcial de um atributo fora das chaves. Se ela existe, a tabela não passa na 2FN e também não pode estar na 3FN.",
+      "example": "Uma tabela com chave (Aluno, Disciplina) e Aluno → NomeAluno pode estar em 1FN, mas falhar em 2FN."
+    },
+    "prompt": "ITEM_NOTA tem valores atômicos, chave (Nota, Código) e as DFs abaixo. Até qual forma ela atende entre 1FN, 2FN e 3FN?",
+    "options": [
+      {
+        "id": "1",
+        "label": "Somente 1FN.",
+        "feedback": "Passa no teste dos valores atômicos, mas Código → Descrição viola a 2FN."
+      },
+      {
+        "id": "2",
+        "label": "Até 2FN, mas não 3FN.",
+        "feedback": "Antes da 3FN, a dependência parcial Código → Descrição já impede a 2FN."
+      },
+      {
+        "id": "3",
+        "label": "Pelo menos 3FN.",
+        "feedback": "A 3FN exige 2FN. A dependência parcial precisa ser corrigida primeiro."
+      }
+    ],
+    "answer": [
+      "1"
+    ],
+    "hint": "Descrição depende da chave inteira ou só de Código?",
+    "explanation": "A primeira falha é na 2FN. Descrição, fora da única chave candidata, depende de Código, que é apenas parte da chave.",
+    "steps": [
+      {
+        "title": "Teste a 1FN",
+        "text": "O enunciado informa valores atômicos: passou."
+      },
+      {
+        "title": "Teste a 2FN",
+        "text": "Código → Descrição é parcial. Pare: entre as três formas, atende apenas à 1FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          15,
+          21,
+          34,
+          35
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "ITEM_NOTA",
+      "attributes": [
+        "Nota",
+        "Código",
+        "Quantidade",
+        "Descrição"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota",
+            "Código"
+          ],
+          "to": [
+            "Quantidade"
+          ]
+        },
+        {
+          "from": [
+            "Código"
+          ],
+          "to": [
+            "Descrição"
+          ]
+        }
+      ]
+    },
+    "assumption": "Considere valores atômicos e somente as DFs exibidas e suas consequências. A única chave candidata é (Nota, Código)."
+  },
+  {
+    "id": "intro-classificar-2fn",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Chave simples já garante 3FN?",
+    "preparation": {
+      "title": "Diferencie os dois tipos de dependência",
+      "text": "Uma chave de um atributo não tem uma parte própria não vazia. Nos exemplos daqui, isso elimina a dependência parcial. Porém, ela pode determinar um intermediário que determina outra informação: a 3FN precisa de uma verificação adicional.",
+      "example": "Pedido → Cliente → TelefoneCliente pode ter chave simples Pedido e ainda misturar o telefone do cliente aos pedidos."
+    },
+    "prompt": "NOTA tem valores atômicos, única chave Nota e as DFs abaixo. Nenhum atributo é determinado pelo conjunto vazio. Até qual forma ela atende entre 1FN, 2FN e 3FN?",
+    "options": [
+      {
+        "id": "1",
+        "label": "Somente 1FN.",
+        "feedback": "Sem dependências parciais da única chave, a tabela também atende à 2FN."
+      },
+      {
+        "id": "2",
+        "label": "Até 2FN, mas não 3FN.",
+        "feedback": "A chave simples não tem dependência parcial, mas Cliente → NomeCliente viola a 3FN."
+      },
+      {
+        "id": "3",
+        "label": "Pelo menos 3FN.",
+        "feedback": "Cliente não é superchave, e NomeCliente não é primário. A dependência transitiva ainda precisa ser tratada."
+      }
+    ],
+    "answer": [
+      "2"
+    ],
+    "hint": "A segunda forma testa partes da chave; a terceira testa também a determinação por Cliente.",
+    "explanation": "NOTA está em 2FN, mas não em 3FN: Nota → Cliente → NomeCliente. Chave simples não garante 3FN.",
+    "steps": [
+      {
+        "title": "Teste 1FN e 2FN",
+        "text": "Os valores são atômicos e não há dependência parcial da única chave Nota."
+      },
+      {
+        "title": "Teste a 3FN",
+        "text": "Cliente não determina a nota inteira. NomeCliente não participa de chave. Cliente → NomeCliente viola a 3FN."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          34,
+          36,
+          38,
+          39
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "NOTA",
+      "attributes": [
+        "Nota",
+        "Cliente",
+        "NomeCliente"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota"
+          ],
+          "to": [
+            "Cliente"
+          ]
+        },
+        {
+          "from": [
+            "Cliente"
+          ],
+          "to": [
+            "NomeCliente"
+          ]
+        }
+      ]
+    },
+    "assumption": "A única chave candidata é Nota. Um cliente pode ter várias notas; nomes não identificam clientes nem notas."
+  },
+  {
+    "id": "intro-classificar-3fn",
+    "moduleId": "primeiros-passos",
+    "type": "choice",
+    "difficulty": "easy",
+    "title": "Quando os três testes passam",
+    "preparation": {
+      "title": "Saber parar também faz parte",
+      "text": "Depois de conferir os valores atômicos, a chave e as dependências parciais e transitivas indevidas, você pode concluir que a relação atende à 3FN. A conclusão vale para as regras informadas, não para qualquer regra de negócio imaginada.",
+      "example": "Em MATERIAL(Código, Descrição), com apenas Código → Descrição e chave Código, a informação descritiva depende diretamente da chave."
+    },
+    "prompt": "Depois de separar o cadastro do material, sobrou ITEM_NOTA(Nota, Código, Quantidade). Os valores são atômicos e a única DF não trivial básica é (Nota, Código) → Quantidade. Até qual forma podemos confirmar entre 1FN, 2FN e 3FN?",
+    "options": [
+      {
+        "id": "1",
+        "label": "Somente 1FN.",
+        "feedback": "Também passa na 2FN: Quantidade não depende só de Nota nem só de Código."
+      },
+      {
+        "id": "2",
+        "label": "Até 2FN, mas não 3FN.",
+        "feedback": "Não há determinante intermediário fora da chave determinando outro atributo fora dela."
+      },
+      {
+        "id": "3",
+        "label": "Pelo menos 3FN.",
+        "feedback": "Passa nos três testes. Isso não exclui que também satisfaça formas posteriores."
+      }
+    ],
+    "answer": [
+      "3"
+    ],
+    "hint": "O único atributo fora da chave é Quantidade, e ele precisa do par inteiro.",
+    "explanation": "A relação atende à 3FN: os valores são atômicos, Quantidade depende completamente da única chave candidata e não há dependência transitiva indevida.",
+    "steps": [
+      {
+        "title": "Teste a 1FN",
+        "text": "Os valores são atômicos."
+      },
+      {
+        "title": "Teste a 2FN",
+        "text": "Quantidade depende do par inteiro; não existe dependência parcial indevida."
+      },
+      {
+        "title": "Teste a 3FN",
+        "text": "Nas DFs não triviais, o determinante contém a chave. Portanto, o teste também passa."
+      }
+    ],
+    "sources": [
+      {
+        "document": "slides",
+        "pages": [
+          15,
+          21,
+          34,
+          38,
+          39,
+          44
+        ],
+        "kind": "adapted"
+      }
+    ],
+    "relation": {
+      "name": "ITEM_NOTA",
+      "attributes": [
+        "Nota",
+        "Código",
+        "Quantidade"
+      ],
+      "dependencies": [
+        {
+          "from": [
+            "Nota",
+            "Código"
+          ],
+          "to": [
+            "Quantidade"
+          ]
+        }
+      ]
+    },
+    "assumption": "Considere somente a DF exibida e suas consequências. A única chave candidata é (Nota, Código); nem Nota nem Código determinam Quantidade sozinhos."
+  }
+]

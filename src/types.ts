@@ -64,6 +64,7 @@ export interface Question {
   title: string;
   prompt: string;
   assumption?: string;
+  preparation?: { title: string; text: string; example: string };
   relation?: Relation;
   options?: Option[];
   answer: string[];

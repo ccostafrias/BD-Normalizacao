@@ -1,12 +1,17 @@
 import { useCatalog } from '../hooks/useCatalog';
 import { ModuleCard } from '../components/ModuleCard';
 import { Icon } from '../components/ui/Icon';
-import { Button, EmptyState, PageHeading } from '../components/ui/Primitives';
+import { Button, ButtonLink, EmptyState, PageHeading } from '../components/ui/Primitives';
 
 export default function CatalogPage() {
   const { search, difficulty, mode, groups, queryString, setFilter, clearFilters } = useCatalog();
   return <>
     <PageHeading eyebrow="APRENDA FAZENDO" title="Um desafio de cada vez." description="Escolha um módulo. Você pode voltar às respostas e refazer qualquer questão." />
+    <aside className="beginner-invitation panel">
+      <Icon name="bulb" size={23} />
+      <div><h2>Ainda não sabe o que significa FN?</h2><p>Aprenda a identificar 1FN, 2FN e 3FN com explicações antes de cada exercício.</p></div>
+      <ButtonLink variant="soft" to="/praticar/primeiros-passos">Começar do zero</ButtonLink>
+    </aside>
     <div className="catalog-toolbar panel">
       <label className="search-field">
         <Icon name="search" size={19} />
